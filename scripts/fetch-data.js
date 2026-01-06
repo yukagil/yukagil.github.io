@@ -57,21 +57,55 @@ async function fetchRSS() {
   console.log('📡 Fetching RSS data from note.com...');
   
   try {
-    const response = await fetch(NOTE_RSS_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; PortfolioBuild/1.0)'
-      }
-    });
+    const allWritings = [];
+    let page = 1;
+    let hasMore = true;
     
-    if (!response.ok) {
-      throw new Error(`RSS fetch failed: ${response.status}`);
+    while (hasMore) {
+      const url = page === 1 ? NOTE_RSS_URL : `${NOTE_RSS_URL}?page=${page}`;
+      console.log(`   Fetching page ${page}...`);
+      
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (compatible; PortfolioBuild/1.0)'
+        }
+      });
+      
+      if (!response.ok) {
+        if (response.status === 404 || page > 1) {
+          // ページが見つからない場合は終了
+          hasMore = false;
+          break;
+        }
+        throw new Error(`RSS fetch failed: ${response.status}`);
+      }
+      
+      const xmlText = await response.text();
+      const writings = parseRSS(xmlText, page === 1 ? 0 : allWritings.length);
+      
+      if (writings.length === 0) {
+        // 新しい記事がなければ終了
+        hasMore = false;
+        break;
+      }
+      
+      allWritings.push(...writings);
+      
+      // note.comのRSSは通常20件ずつ返すので、20件未満なら最後のページ
+      if (writings.length < 20) {
+        hasMore = false;
+      } else {
+        page++;
+        // 無限ループ防止: 最大100ページまで
+        if (page > 100) {
+          console.log('⚠️ Reached maximum page limit (100)');
+          hasMore = false;
+        }
+      }
     }
     
-    const xmlText = await response.text();
-    const writings = parseRSS(xmlText);
-    
-    const outputPath = saveJson('writings.json', writings);
-    console.log(`✅ Successfully saved ${writings.length} articles to ${outputPath}`);
+    const outputPath = saveJson('writings.json', allWritings);
+    console.log(`✅ Successfully saved ${allWritings.length} articles to ${outputPath}`);
     
   } catch (error) {
     console.error('❌ Failed to fetch RSS:', error.message);
@@ -81,7 +115,7 @@ async function fetchRSS() {
   }
 }
 
-function parseRSS(xmlText) {
+function parseRSS(xmlText, startIndex = 0) {
   const writings = [];
   
   const itemRegex = /<item>([\s\S]*?)<\/item>/g;
@@ -97,9 +131,10 @@ function parseRSS(xmlText) {
   ];
   
   let match;
-  let index = 0;
+  let index = startIndex;
   
-  while ((match = itemRegex.exec(xmlText)) !== null && index < 10) {
+  // 10件の制限を削除して全件取得
+  while ((match = itemRegex.exec(xmlText)) !== null) {
     const itemContent = match[1];
     
     const titleMatch = itemContent.match(titleRegex);
@@ -138,6 +173,7 @@ function parseRSS(xmlText) {
     }
   }
   
+  // 日付でソート（新しい順）
   writings.sort((a, b) => (a.date < b.date ? 1 : -1));
   return writings;
 }

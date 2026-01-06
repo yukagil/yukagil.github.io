@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Moon, Sun, Tent, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Moon, Sun, Tent, ArrowRight, ArrowLeft, Mail } from 'lucide-react';
 
 interface HeaderProps {
   isDarkMode: boolean;
   onToggleTheme: () => void;
-  currentPage: 'home' | 'services' | 'projects';
+  currentPage: 'home' | 'services' | 'projects' | 'contact';
 }
 
 export default function Header({ isDarkMode, onToggleTheme, currentPage }: HeaderProps) {
@@ -33,17 +33,30 @@ export default function Header({ isDarkMode, onToggleTheme, currentPage }: Heade
           {/* Navigation */}
           <nav className="flex items-center gap-2">
             {currentPage === 'home' ? (
-              <Link
-                to="/services"
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border-2 text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 ${
-                  isDarkMode
-                    ? 'bg-purple-600 border-purple-400 text-white hover:bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)]'
-                    : 'bg-blue-500 border-black text-white hover:bg-blue-600 shadow-[2px_2px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]'
-                }`}
-              >
-                <span>Services</span>
-                <ArrowRight size={16} />
-              </Link>
+              <>
+                <Link
+                  to="/services"
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border-2 text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 ${
+                    isDarkMode
+                      ? 'bg-purple-600 border-purple-400 text-white hover:bg-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.4)] hover:shadow-[0_0_20px_rgba(168,85,247,0.6)]'
+                      : 'bg-blue-500 border-black text-white hover:bg-blue-600 shadow-[2px_2px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]'
+                  }`}
+                >
+                  <span>Services</span>
+                  <ArrowRight size={16} />
+                </Link>
+                <Link
+                  to="/contact"
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border-2 text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 ${
+                    isDarkMode
+                      ? 'bg-green-600 border-green-400 text-white hover:bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_20px_rgba(34,197,94,0.6)]'
+                      : 'bg-green-500 border-black text-white hover:bg-green-600 shadow-[2px_2px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]'
+                  }`}
+                >
+                  <Mail size={16} />
+                  <span>Contact</span>
+                </Link>
+              </>
             ) : (
               <Link
                 to="/"

@@ -526,6 +526,37 @@ export default function Services({ isDarkMode, setIsDarkMode }: ServicesProps) {
                   </div>
                 ))}
               </div>
+              {/* 迷ったら人向け */}
+              <div
+                className={`mt-6 p-6 rounded-2xl border-2 transition-all duration-300 hover:-translate-y-1 ${
+                  isDarkMode ? 'bg-gray-800 border-gray-600 hover:border-gray-400' : 'bg-white border-black shadow-[4px_4px_0_0_#000] hover:shadow-[6px_6px_0_0_#000]'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <p className={`text-sm font-bold mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      迷ったら
+                    </p>
+                    <h4 className={`text-xl font-black tracking-tight mb-2 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                      お問い合わせフォームからお気軽に
+                    </h4>
+                    <p className={`text-sm font-medium leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      どの相談方法が自分に合うかわからない場合は、お気軽にお問い合わせフォームからご連絡ください。
+                    </p>
+                  </div>
+                  <Link
+                    to="/contact"
+                    className={`flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-lg border-2 font-bold transition-all duration-200 hover:-translate-y-0.5 ${
+                      isDarkMode
+                        ? 'bg-green-600 border-green-400 text-white hover:bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_20px_rgba(34,197,94,0.6)]'
+                        : 'bg-green-600 border-black text-white shadow-[2px_2px_0_0_#000] hover:shadow-[3px_3px_0_0_#000]'
+                    }`}
+                  >
+                    お問い合わせフォームへ
+                    <ArrowRight size={18} />
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </section>
