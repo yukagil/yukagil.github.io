@@ -1,5 +1,60 @@
 [
   {
+    "id": "1f2ay-asxq3",
+    "date": "2026.02.26",
+    "event": "YOUTRUST",
+    "title": "会社タイプ別でわかる 社内コミュニケーション講座",
+    "mainLink": "https://youtrust.jp/lp/youtrust_campus_officepolitics_archive",
+    "relatedLinks": [
+      {
+        "label": "Slides",
+        "url": "https://speakerdeck.com/muture/she-nei-zheng-zhi-tojiao-she",
+        "type": "slide"
+      },
+      {
+        "label": "Report",
+        "url": "https://youtrust.jp/lp/youtrust_campus_officepolitics_archive",
+        "type": "article"
+      }
+    ],
+    "imageUrl": "https://images.microcms-assets.io/assets/2daaccabac7f4a45908ed63954b37af0/60de3d4b8943486492c3152e334e15a1/youtrust_2026_0113_Cmk_YTcampus_%E3%82%A2%E3%83%BC%E3%82%AB%E3%82%A4%E3%83%95%E3%82%99_2-05.png"
+  },
+  {
+    "id": "hn2_z4v098",
+    "date": "2025.11.25",
+    "event": "UX組織成功戦略会議2025",
+    "title": "大企業のUX組織が見据える未来",
+    "mainLink": "https://www.uxia.or.jp/news/detail_251017_02",
+    "relatedLinks": [
+      {
+        "label": "Report",
+        "url": "https://www.uxia.or.jp/news/detail_251017_02",
+        "type": "article"
+      }
+    ],
+    "imageUrl": "https://images.microcms-assets.io/assets/2daaccabac7f4a45908ed63954b37af0/e524c25030d64e41a9bb53f740c67794/cover%20(1).png"
+  },
+  {
+    "id": "8ivt51be8",
+    "date": "2025.09.19",
+    "event": "プロダクトヒストリーカンファレンス2025",
+    "title": "AI時代、変化する役割。3つの視点から未来を描く",
+    "mainLink": "https://note.com/muture/n/n613e79a6ab41",
+    "relatedLinks": [
+      {
+        "label": "Slides",
+        "url": "https://speakerdeck.com/muture/product-history-conference-2025-hurotakutomanesimentobian",
+        "type": "slide"
+      },
+      {
+        "label": "Report",
+        "url": "https://note.com/muture/n/n613e79a6ab41",
+        "type": "article"
+      }
+    ],
+    "imageUrl": "https://images.microcms-assets.io/assets/2daaccabac7f4a45908ed63954b37af0/9d97cb8769664b6eb31e389ad2df595b/image%20(1).png"
+  },
+  {
     "id": "czzwms8dce",
     "date": "2025.06.18",
     "event": "Webinar",

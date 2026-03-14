@@ -78,5 +78,61 @@
     "date": "2023.02.10",
     "link": "https://note.com/yukagil/n/nd7c111ac9ddf",
     "imageUrl": ""
+  },
+  {
+    "id": "rss-10",
+    "title": "VDSLマンションで回線速度を4.6xした話",
+    "source": "note",
+    "date": "2023.01.25",
+    "link": "https://note.com/yukagil/n/n0ed03a76254e",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/96403151/rectangle_large_type_2_d4dd1b0881d6203935c6606bf54fff27.png?width=800"
+  },
+  {
+    "id": "rss-11",
+    "title": "死なないための、プロダクトマネジメント",
+    "source": "note",
+    "date": "2022.12.17",
+    "link": "https://note.com/yukagil/n/n85f1032f4966",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/93232796/rectangle_large_type_2_394bb9fa7bbb5e4b4bfc8c819d21008e.png?width=800"
+  },
+  {
+    "id": "rss-12",
+    "title": "要求管理と優先度づけの世界",
+    "source": "note",
+    "date": "2022.12.07",
+    "link": "https://note.com/yukagil/n/n496c32c71301",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/92657534/rectangle_large_type_2_94a3e8cb90eab8991c8511c5021a78ef.png?width=800"
+  },
+  {
+    "id": "rss-13",
+    "title": "その要求に至る意思決定を伝えるために、PRDR(=Product Requirements Decision Records)をはじめた",
+    "source": "note",
+    "date": "2022.05.11",
+    "link": "https://note.com/yukagil/n/n367dc714eb70",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/78302669/rectangle_large_type_2_f3a73c95d8a8f69b53c010c3b1a4ccd3.png?width=800"
+  },
+  {
+    "id": "rss-14",
+    "title": "プロダクトマネージャーはWhy, Whatの責任を持つが、Howはどうだろう",
+    "source": "note",
+    "date": "2022.04.07",
+    "link": "https://note.com/yukagil/n/n1bc31227d6ff",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/75857362/rectangle_large_type_2_1c943c0813b0a2b652966cd63cf1f83f.png?width=800"
+  },
+  {
+    "id": "rss-15",
+    "title": "BtoBtoC SaaSで三方良しを叶えるための勘所",
+    "source": "note",
+    "date": "2021.12.12",
+    "link": "https://note.com/yukagil/n/n1020b9e2cd90",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/67621774/rectangle_large_type_2_1c6df2d14453084593742dfbf23e13b3.png?width=800"
+  },
+  {
+    "id": "rss-16",
+    "title": "NEWSというテーマからインタビューアプリというアイデアが生まれるまで[SPAJAM2019東京A予選]",
+    "source": "note",
+    "date": "2019.05.23",
+    "link": "https://note.com/yukagil/n/n833628575cb6",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/11807899/rectangle_large_type_2_66c42addba6e36d0766718b945a6f5dc.png?width=800"
   }
 ]

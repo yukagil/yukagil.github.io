@@ -12,7 +12,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://yukagil.github.io/Portfolio",
+  "homepage": "https://yukagil.github.io",
   "dependencies": {
     "lucide-react": "^0.562.0",
     "react": "^19.2.0",

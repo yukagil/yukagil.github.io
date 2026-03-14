@@ -2,7 +2,7 @@
 
 Yuta Kanehara のポートフォリオサイト
 
-🔗 **Live Site**: https://yukagil.github.io/Portfolio/
+🔗 **Live Site**: https://yukagil.github.io
 
 ## 技術スタック
 

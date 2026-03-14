@@ -1,15 +1,57 @@
 @import "tailwindcss";
 
+/* ===== Design System: "Game Menu Minimal" ===== */
+:root {
+  /* Typography */
+  --font-display: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', system-ui, sans-serif;
+  --font-body: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Menlo', monospace;
+
+  /* Colors — Light Mode */
+  --color-bg: #FAF9F7;
+  --color-surface: #F0EFED;
+  --color-text: #2C2A25;
+  --color-text-secondary: #6B6860;
+  --color-text-muted: #9B9890;
+  --color-accent: #D03530;
+  --color-accent-hover: #D03530;
+  --color-border: #D8D6D0;
+  --color-border-strong: #2C2A25;
+
+  /* Spacing */
+  --space-section: 80px;
+  --space-card: 24px;
+  --space-item: 12px;
+
+  /* Layout */
+  --max-width: 640px;
+
+  /* Motion */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+}
+
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom animations */
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Animations ===== */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -17,58 +59,171 @@ html {
   }
 }
 
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Staggered entrance classes */
+.animate-enter {
+  opacity: 0;
+  animation: fadeInUp 0.5s var(--ease-smooth) forwards;
+}
+
+.animate-enter-delay-1 { animation-delay: 0.08s; }
+.animate-enter-delay-2 { animation-delay: 0.16s; }
+.animate-enter-delay-3 { animation-delay: 0.24s; }
+.animate-enter-delay-4 { animation-delay: 0.32s; }
+.animate-enter-delay-5 { animation-delay: 0.40s; }
+.animate-enter-delay-6 { animation-delay: 0.48s; }
+.animate-enter-delay-7 { animation-delay: 0.56s; }
+
+/* Section fade in */
+.animate-section {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s var(--ease-smooth), transform 0.4s var(--ease-smooth);
+}
+
+.animate-section.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Breathing dots */
+.breathing-dot {
+  animation: breathe 2s ease-in-out infinite;
+}
+.breathing-dot:nth-child(2) { animation-delay: 0.3s; }
+.breathing-dot:nth-child(3) { animation-delay: 0.6s; }
+
+/* ===== Nintendo-style interactive states ===== */
+
+/* Game cursor selection indicator */
+.game-select {
+  position: relative;
+}
+
+.game-select::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transition: transform var(--duration-fast) var(--ease-bounce);
+}
+
+.game-select:hover::before,
+.game-select:focus-visible::before {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Tap feedback — background highlight on hover & active */
+.game-select:hover {
+  background-color: var(--color-surface);
+}
+
+.game-select:active {
+  background-color: var(--color-surface);
+}
+
+/* Links that change color on hover/tap */
+.link-accent:hover,
+.link-accent:active {
+  color: var(--color-accent);
+}
+
+@media (max-width: 639px) {
+  .game-select::before {
+    display: none;
   }
 }
 
-@keyframes hoverLift {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+/* Press-in effect (Nintendo button feel) */
+.press-in {
+  transition: transform var(--duration-fast) var(--ease-bounce),
+              box-shadow var(--duration-fast) ease;
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+.press-in:hover {
+  transform: scale(0.97);
 }
 
-/* スマホ・タブレット用：画面に入ったときにホバーと同じアニメーション */
-@media (hover: none) and (pointer: coarse) {
-  .mobile-hover-lift.in-view {
-    animation: hoverLift 0.4s ease-out;
-  }
-  
-  /* タップ時にホバーと同じアニメーション効果 */
-  .mobile-tap-animation:active {
-    transform: translateY(-4px);
-    transition: transform 0.1s ease-out;
-  }
-  
-  .mobile-tap-shadow:active {
-    box-shadow: 0 6px 0 0 #000 !important;
-  }
-  
-  .mobile-tap-shadow-dark:active {
-    box-shadow: 0 6px 0 0 rgba(75, 85, 99, 1) !important;
-  }
+.press-in:active {
+  transform: scale(0.95);
 }
 
-/* Line clamp utility */
+/* ===== Utility classes ===== */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* ===== Profile photo game frame ===== */
+.profile-frame {
+  position: relative;
+}
+
+.profile-frame::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 3px solid var(--color-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: profileRing 3s ease-in-out infinite;
+}
+
+@keyframes profileRing {
+  0%, 100% { opacity: 0; transform: scale(0.95); }
+  50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+/* DQ-style encounter animation */
+@keyframes dqFlash {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  16%  { opacity: 0; }
+  24%  { opacity: 1; }
+  32%  { opacity: 0; }
+  40%  { opacity: 0.8; }
+  55%  { opacity: 1; }
+  70%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.dq-encounter-flash {
+  animation: dqFlash 0.8s ease-out forwards !important;
+}
+
+@keyframes dqSlideUp {
+  0%   { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.dq-encounter-content {
+  animation: dqSlideUp 0.5s var(--ease-bounce) 0.4s both;
 }

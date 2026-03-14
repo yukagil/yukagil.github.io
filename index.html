@@ -3,10 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow" />
-    <meta name="googlebot" content="noindex, nofollow" />
-    <meta name="description" content="Yuta Kanehara - Product Manager Portfolio" />
+    <meta name="description" content="プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。10年以上のプロダクトづくりの経験をベースに、人・組織・事業・経営それぞれのレイヤーにおける、理論と実践の両方に基づいた再現性のある現実的なアプローチを大切にしています。" />
+    <meta name="author" content="Yuta Kanehara" />
+    <meta name="keywords" content="Product Manager, プロダクトマネージャー, UX Strategy, Org Design, Product Management, 組織デザイン" />
+    <link rel="canonical" href="https://yukagil.github.io/" />
+    <link rel="icon" type="image/webp" href="https://storage.googleapis.com/studio-cms-assets/projects/Z9qp7nJGOP/s-1120x1120_v-fs_webp_2a3f9622-e54d-4f8b-8670-510ba156906d_small.webp" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V95PS28CQY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-V95PS28CQY');
+    </script>
     <title>Yuta Kanehara | Product Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
@@ -20,13 +33,18 @@
       // the correct url will be waiting in the browser's history for
       // the single page app to route accordingly.
       (function(l) {
-        if (l.search[1] === '/' ) {
+        // クエリパラメータが?/で始まる場合のみ処理（404.htmlからのリダイレクト）
+        if (l.search && l.search.length > 1 && l.search[1] === '/') {
           var decoded = l.search.slice(1).split('&').map(function(s) { 
             return s.replace(/~and~/g, '&')
           }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+          // デコードされたパスが既に現在のパスと同じでない場合のみ処理
+          var newPath = l.pathname.slice(0, -1) + decoded + l.hash;
+          var currentPath = l.pathname + l.search + l.hash;
+          // 無限ループを防ぐ: 新しいパスが現在のパスと異なる場合のみ処理
+          if (newPath !== currentPath && !newPath.includes('?/')) {
+            window.history.replaceState(null, null, newPath);
+          }
         }
       }(window.location))
     </script>

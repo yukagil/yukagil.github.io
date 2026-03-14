@@ -12,7 +12,7 @@ const OUTPUT_DIR = resolve(__dirname, '../src/data');
 
 // 設定
 const NOTE_RSS_URL = 'https://note.com/yukagil/rss';
-const MICROCMS_API_URL = 'https://yukagil.microcms.io/api/v1/articles';
+const MICROCMS_API_URL = 'https://yukagil.microcms.io/api/v1/articles?limit=100';
 
 // 環境変数からAPIキーを取得
 function getApiKey() {

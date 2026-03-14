@@ -1,33 +1,29 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from './Home';
 import Services from './Services';
 import Contact from './Contact';
-import TransformationService from './pages/TransformationService';
-import LeadershipService from './pages/LeadershipService';
-import DiscoveryService from './pages/DiscoveryService';
 
-export default function App() {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+function ScrollToTop() {
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
 
+  return null;
+}
+
+export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-      <Route path="/services" element={<Services isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-      <Route path="/contact" element={<Contact isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-      <Route path="/services/transformation" element={<TransformationService isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-      <Route path="/services/leadership" element={<LeadershipService isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-      <Route path="/services/discovery" element={<DiscoveryService isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
   );
 }
