@@ -160,20 +160,8 @@ const writings = staticWritings as Writing[];
 export default function Home() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [encounterActive, setEncounterActive] = useState(false);
-  const [showHeader, setShowHeader] = useState(false);
   const [showQr, setShowQr] = useState(false);
-  const zone1Ref = useRef<HTMLDivElement>(null);
   const flashRef = useRef<HTMLDivElement>(null);
-
-  // Show header when scrolled past Zone 1
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setShowHeader(!entry.isIntersecting),
-      { threshold: 0 }
-    );
-    if (zone1Ref.current) observer.observe(zone1Ref.current);
-    return () => observer.disconnect();
-  }, []);
 
   // DQ encounter transition (flash on enter, simple fade on return)
   const handleCardFlip = useCallback(() => {
@@ -203,47 +191,10 @@ export default function Home() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <SEO />
 
-      {/* Floating Header — appears on scroll past Zone 1 */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          showHeader ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-        }`}
-        style={{
-          backgroundColor: 'rgba(250, 249, 247, 0.95)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: `1px solid var(--color-border)`,
-        }}
-      >
-        <div className="max-w-[640px] mx-auto px-4 flex items-center justify-between h-12">
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-display font-bold text-sm"
-            style={{ color: 'var(--color-text)' }}
-          >
-            Yuta Kanehara
-          </button>
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all press-in"
-            style={{
-              backgroundColor: 'var(--color-accent)',
-              color: '#fff',
-            }}
-          >
-            Contact
-          </a>
-        </div>
-      </header>
-
       {/* ============================================================ */}
       {/* ZONE 1: The Card */}
       {/* ============================================================ */}
       <div
-        ref={zone1Ref}
         className="flex flex-col items-center justify-center px-4 relative overflow-hidden"
         style={{ minHeight: '100dvh' }}
       >
@@ -524,12 +475,10 @@ export default function Home() {
           <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--color-text-secondary)' }}>
             これまでの経験をもとに、プロダクトマネジメントや組織づくりの支援もしています。
           </p>
-          <div>
+          <div className="space-y-4">
             {services.map((s, i) => (
               <div
                 key={i}
-                className="py-4"
-                style={{ borderTop: '1px solid var(--color-border)' }}
               >
                 <p className="text-sm font-medium mb-1">{s.name}</p>
                 <p className="text-xs mb-2" style={{ color: 'var(--color-text-secondary)' }}>
