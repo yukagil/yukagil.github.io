@@ -19,26 +19,35 @@ interface Particle {
 interface Bond {
   a: number;
   b: number;
-  life: number;
 }
 
-const COLORS: { color: string; weight: number; opacityMin: number; opacityMax: number }[] = [
-  { color: '#8B5CF6', weight: 0.20, opacityMin: 0.15, opacityMax: 0.35 },
-  { color: '#FF7074', weight: 0.40, opacityMin: 0.15, opacityMax: 0.35 },
-  { color: '#42B4E6', weight: 0.60, opacityMin: 0.15, opacityMax: 0.35 },
-  { color: '#5BBD5B', weight: 0.80, opacityMin: 0.15, opacityMax: 0.35 },
-  { color: '#F5C542', weight: 1.00, opacityMin: 0.15, opacityMax: 0.35 },
+interface Ripple {
+  x: number;
+  y: number;
+  radius: number;
+  maxRadius: number;
+  life: number;
+  maxLife: number;
+  color: string;
+}
+
+const COLORS: { color: string; weight: number }[] = [
+  { color: '#E62D28', weight: 0.20 }, // red
+  { color: '#2DA44E', weight: 0.40 }, // green
+  { color: '#1E84E0', weight: 0.60 }, // blue
+  { color: '#F5A516', weight: 0.80 }, // amber
+  { color: '#A02BB8', weight: 1.00 }, // purple
 ];
 
-function pickColor(): { color: string; opacity: number } {
+const OPACITY_MIN = 0.18;
+const OPACITY_MAX = 0.32;
+
+function pickColor(): string {
   const r = Math.random();
   for (const c of COLORS) {
-    if (r < c.weight) {
-      return { color: c.color, opacity: c.opacityMin + Math.random() * (c.opacityMax - c.opacityMin) };
-    }
+    if (r < c.weight) return c.color;
   }
-  const last = COLORS[COLORS.length - 1];
-  return { color: last.color, opacity: last.opacityMin + Math.random() * (last.opacityMax - last.opacityMin) };
+  return COLORS[COLORS.length - 1].color;
 }
 
 const SHAPES: Shape[] = ['circle', 'rect', 'square'];
@@ -47,20 +56,25 @@ const SHAPES: Shape[] = ['circle', 'rect', 'square'];
 const SPAWN_DESKTOP = 80;
 const SPAWN_MOBILE = 35;
 const INTERACT_DIST = 50;       // distance for collision check
-const BOND_BREAK_DIST = 80;     // bond snaps beyond this
-const BOND_MAX_LIFE = 300;
+const TOUCH_BONUS = 6;          // pixels added to effective touch radius
+const BOND_BREAK_DIST = 110;    // bond snaps beyond this (safety valve)
 const SPRING_K = 0.0003;
-const BOND_LINE_ALPHA = 0.12;
+const BOND_LINE_ALPHA = 0.22;
 const MAX_BONDS = 200;          // hard cap — skip new bonds beyond this
 const MAX_SIZE = 24;            // merge size cap
 const BOND_COOLDOWN = 120;      // ~2s no bonds at start
+const CLUSTER_STABLE_SIZE = 4;  // clusters up to this size never spontaneously split
+const CLUSTER_BREAK_K = 0.0008; // per-bond break prob = (size - stable) * K each frame
+const RIPPLE_MAX_RADIUS = 22;
+const RIPPLE_LIFE = 36;
+const RIPPLE_ALPHA = 0.45;
+const MAX_RIPPLES = 40;
 // Collision outcomes (must sum to 1.0)
 const CHANCE_BOND = 0.45;
 const CHANCE_MERGE = 0.15;
 // remaining = bounce (0.40)
 
 function createParticle(w: number, h: number, x?: number, y?: number): Particle {
-  const { color, opacity } = pickColor();
   return {
     x: x ?? Math.random() * w,
     y: y ?? Math.random() * h,
@@ -70,9 +84,9 @@ function createParticle(w: number, h: number, x?: number, y?: number): Particle 
     rotation: Math.random() * Math.PI * 2,
     rotationSpeed: 0.002 + Math.random() * 0.008,
     shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
-    opacity,
+    opacity: OPACITY_MIN + Math.random() * (OPACITY_MAX - OPACITY_MIN),
     phase: Math.random() * Math.PI * 2,
-    color,
+    color: pickColor(),
   };
 }
 
@@ -111,6 +125,20 @@ export default function ParticleBackground() {
     let animId: number;
     let particles: Particle[] = [];
     let bonds: Bond[] = [];
+    const ripples: Ripple[] = [];
+
+    function spawnRipple(x: number, y: number, color: string, scale = 1) {
+      if (ripples.length >= MAX_RIPPLES) return;
+      ripples.push({
+        x,
+        y,
+        radius: 2,
+        maxRadius: RIPPLE_MAX_RADIUS * scale,
+        life: RIPPLE_LIFE,
+        maxLife: RIPPLE_LIFE,
+        color,
+      });
+    }
     let targetCount = SPAWN_DESKTOP;
     let cW = 0;
     let cH = 0;
@@ -225,18 +253,22 @@ export default function ParticleBackground() {
 
           const pa = particles[i];
           const pb = particles[j];
-          const touching = d2 < ((pa.size + pb.size) / 2) ** 2;
+          const touchR = (pa.size + pb.size) / 2 + TOUCH_BONUS;
+          const touching = d2 < touchR * touchR;
           if (!touching) continue; // interactions only on collision
 
+          const mx = (pa.x + pb.x) / 2;
+          const my = (pa.y + pb.y) / 2;
           const roll = Math.random();
 
           if (roll < CHANCE_BOND) {
             // --- Bond ---
             if (bonds.length < MAX_BONDS && (bondCount.get(i) ?? 0) < 4 && (bondCount.get(j) ?? 0) < 4) {
-              bonds.push({ a: i, b: j, life: BOND_MAX_LIFE });
+              bonds.push({ a: i, b: j });
               bondSet.add(key);
               bondCount.set(i, (bondCount.get(i) ?? 0) + 1);
               bondCount.set(j, (bondCount.get(j) ?? 0) + 1);
+              spawnRipple(mx, my, pa.color);
             }
           } else if (roll < CHANCE_BOND + CHANCE_MERGE) {
             // --- Merge: smaller absorbed into larger ---
@@ -246,6 +278,7 @@ export default function ParticleBackground() {
             big.vy = (big.vy * big.size * big.size + small.vy * small.size * small.size) / totalMass;
             big.size = Math.min(Math.sqrt(totalMass), MAX_SIZE);
             mergeRemove.add(removeIdx);
+            spawnRipple(mx, my, big.color, 1.6);
           } else if (touching) {
             // --- Bounce: elastic reflection ---
             const d = Math.sqrt(d2) || 1;
@@ -304,6 +337,28 @@ export default function ParticleBackground() {
         }
       }
 
+      // --- Compute cluster sizes (union-find) ---
+      const ufParent = new Array(particles.length);
+      for (let i = 0; i < particles.length; i++) ufParent[i] = i;
+      const ufFind = (x: number) => {
+        while (ufParent[x] !== x) {
+          ufParent[x] = ufParent[ufParent[x]];
+          x = ufParent[x];
+        }
+        return x;
+      };
+      for (const b of bonds) {
+        if (!particles[b.a] || !particles[b.b]) continue;
+        const ra = ufFind(b.a);
+        const rb = ufFind(b.b);
+        if (ra !== rb) ufParent[ra] = rb;
+      }
+      const rootSize = new Map<number, number>();
+      for (let i = 0; i < particles.length; i++) {
+        const r = ufFind(i);
+        rootSize.set(r, (rootSize.get(r) ?? 0) + 1);
+      }
+
       // --- Spring forces on bonds & draw bond lines ---
       const bondRemove: number[] = [];
       for (let bi = 0; bi < bonds.length; bi++) {
@@ -315,11 +370,22 @@ export default function ParticleBackground() {
         const dx = pb.x - pa.x;
         const dy = pb.y - pa.y;
         const d = Math.sqrt(dx * dx + dy * dy) || 1;
-        bond.life--;
 
-        if (d > BOND_BREAK_DIST || bond.life <= 0) {
+        // Distance safety valve
+        if (d > BOND_BREAK_DIST) {
           bondRemove.push(bi);
           continue;
+        }
+
+        // Cluster-size based spontaneous break: bigger clusters fragment faster
+        const size = rootSize.get(ufFind(bond.a)) ?? 1;
+        if (size > CLUSTER_STABLE_SIZE) {
+          const breakProb = (size - CLUSTER_STABLE_SIZE) * CLUSTER_BREAK_K;
+          if (Math.random() < breakProb) {
+            spawnRipple((pa.x + pb.x) / 2, (pa.y + pb.y) / 2, pa.color, 0.8);
+            bondRemove.push(bi);
+            continue;
+          }
         }
 
         // Spring
@@ -329,8 +395,8 @@ export default function ParticleBackground() {
         pa.vx += fx; pa.vy += fy;
         pb.vx -= fx; pb.vy -= fy;
 
-        // Draw line
-        const alpha = BOND_LINE_ALPHA * (bond.life / BOND_MAX_LIFE) * (1 - d / BOND_BREAK_DIST);
+        // Draw line — fade only with stretch distance
+        const alpha = BOND_LINE_ALPHA * (1 - d / BOND_BREAK_DIST);
         ctx!.save();
         ctx!.globalAlpha = alpha;
         ctx!.strokeStyle = pa.color;
@@ -378,6 +444,27 @@ export default function ParticleBackground() {
           particles.push(createParticle(cW, cH, sx, sy));
           spawnAccum--;
         }
+      }
+
+      // --- Update + draw ripples ---
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i];
+        const t = 1 - r.life / r.maxLife; // 0 → 1
+        r.radius = 2 + (r.maxRadius - 2) * t;
+        r.life--;
+        if (r.life <= 0) {
+          ripples.splice(i, 1);
+          continue;
+        }
+        const alpha = RIPPLE_ALPHA * (1 - t) * (1 - t);
+        ctx!.save();
+        ctx!.globalAlpha = alpha;
+        ctx!.strokeStyle = r.color;
+        ctx!.lineWidth = 1.5;
+        ctx!.beginPath();
+        ctx!.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
+        ctx!.stroke();
+        ctx!.restore();
       }
 
       // --- Draw particles ---

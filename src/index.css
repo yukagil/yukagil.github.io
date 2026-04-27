@@ -11,15 +11,15 @@
   --color-bg: #FAF9F7;
   --color-surface: #F0EFED;
   --color-text: #2C2A25;
-  --color-text-secondary: #6B6860;
-  --color-text-muted: #9B9890;
+  --color-text-secondary: #5C5A50;
+  --color-text-muted: #7A7870;
   --color-accent: #D03530;
   --color-accent-hover: #D03530;
   --color-border: #D8D6D0;
   --color-border-strong: #2C2A25;
 
   /* Spacing */
-  --space-section: 80px;
+  --space-section: 56px;
   --space-card: 24px;
   --space-item: 12px;
 
@@ -107,6 +107,7 @@ body {
 /* Game cursor selection indicator */
 .game-select {
   position: relative;
+  cursor: pointer;
 }
 
 .game-select::before {
@@ -129,11 +130,11 @@ body {
 
 /* Tap feedback — background highlight on hover & active */
 .game-select:hover {
-  background-color: var(--color-surface);
+  background-color: rgba(208, 53, 48, 0.04);
 }
 
 .game-select:active {
-  background-color: var(--color-surface);
+  background-color: rgba(208, 53, 48, 0.06);
 }
 
 /* Links that change color on hover/tap */
@@ -144,7 +145,9 @@ body {
 
 @media (max-width: 639px) {
   .game-select::before {
-    display: none;
+    left: -12px;
+    width: 6px;
+    height: 6px;
   }
 }
 
@@ -156,6 +159,7 @@ body {
 
 .press-in:hover {
   transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .press-in:active {
@@ -226,4 +230,36 @@ body {
 
 .dq-encounter-content {
   animation: dqSlideUp 0.5s var(--ease-bounce) 0.4s both;
+}
+
+/* ===== Hanko (判子) stamp ===== */
+.hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--color-accent);
+  border-radius: 4px;
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  transform: rotate(-6deg);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* ===== Flip hint animation ===== */
+@keyframes flipHint {
+  0%   { opacity: 0; transform: translateY(4px); }
+  15%  { opacity: 1; transform: translateY(0); }
+  85%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+.flip-hint {
+  animation: flipHint 3s var(--ease-smooth) 3s forwards;
+  opacity: 0;
 }

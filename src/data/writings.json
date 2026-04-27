@@ -1,6 +1,14 @@
 [
   {
     "id": "rss-0",
+    "title": "取引費用の経済学で考える内製と外注",
+    "source": "note",
+    "date": "2026.04.12",
+    "link": "https://note.com/yukagil/n/n8fe64da9afd0",
+    "imageUrl": "https://assets.st-note.com/production/uploads/images/266788600/rectangle_large_type_2_990f96723837227c607bc4de077dd7bf.jpeg?width=800"
+  },
+  {
+    "id": "rss-1",
     "title": "社内政治と交渉",
     "source": "note",
     "date": "2025.12.14",
@@ -8,7 +16,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/236154527/rectangle_large_type_2_444ed2865586a5f8d8919f3fe47d8034.jpeg?width=800"
   },
   {
-    "id": "rss-1",
+    "id": "rss-2",
     "title": "VHSBモデルで読み解くプロダクトマネジメントとダイナミクス",
     "source": "note",
     "date": "2025.12.13",
@@ -16,7 +24,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/235232963/rectangle_large_type_2_225bb623c31a53b632f1a30623d3e0e4.jpeg?width=800"
   },
   {
-    "id": "rss-2",
+    "id": "rss-3",
     "title": "小さな革命、広がる変革",
     "source": "note",
     "date": "2025.12.01",
@@ -24,7 +32,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/229794435/rectangle_large_type_2_b7503cfa7ca8b275ab9faba7e9a2414e.png?width=800"
   },
   {
-    "id": "rss-3",
+    "id": "rss-4",
     "title": "トランスフォーメーションのストーリー: 丸井グループ",
     "source": "note",
     "date": "2024.12.12",
@@ -32,7 +40,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/165466519/rectangle_large_type_2_03f79988db8d92197a5aa54f248273aa.png?width=800"
   },
   {
-    "id": "rss-4",
+    "id": "rss-5",
     "title": "プロダクトマネージャーがRSGTに初参戦してみたら、とっても楽しかったという話",
     "source": "note",
     "date": "2024.01.14",
@@ -40,7 +48,7 @@
     "imageUrl": ""
   },
   {
-    "id": "rss-5",
+    "id": "rss-6",
     "title": "削ってよかった暮らしのモノ 2023",
     "source": "note",
     "date": "2023.12.31",
@@ -48,7 +56,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/126263412/rectangle_large_type_2_a1e86b8a1efaf802c89fcaf09851ec9a.png?width=800"
   },
   {
-    "id": "rss-6",
+    "id": "rss-7",
     "title": "\"問題\"とか\"課題\"とか\"アイデア\"とか\"インサイト\"とかややこしいので関係性を整理したい",
     "source": "note",
     "date": "2023.12.13",
@@ -56,7 +64,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/124319549/rectangle_large_type_2_b3a2a4dee31d8d52749ebc99f4c8d689.png?width=800"
   },
   {
-    "id": "rss-7",
+    "id": "rss-8",
     "title": "あえて非IT系の大企業でデュアルトラックアジャイルを採用した理由とその現在地",
     "source": "note",
     "date": "2023.12.12",
@@ -64,7 +72,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/124420635/rectangle_large_type_2_0b110e2febb4c52625250bee36e69b0b.png?width=800"
   },
   {
-    "id": "rss-8",
+    "id": "rss-9",
     "title": "ChatGPTではじめる、実践OOUI",
     "source": "note",
     "date": "2023.05.01",
@@ -72,7 +80,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/104378015/rectangle_large_type_2_7e1ff631c61e039072b30df5a00cb035.png?width=800"
   },
   {
-    "id": "rss-9",
+    "id": "rss-10",
     "title": "JIRA Product Discovery触ってみたメモ",
     "source": "note",
     "date": "2023.02.10",
@@ -80,7 +88,7 @@
     "imageUrl": ""
   },
   {
-    "id": "rss-10",
+    "id": "rss-11",
     "title": "VDSLマンションで回線速度を4.6xした話",
     "source": "note",
     "date": "2023.01.25",
@@ -88,7 +96,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/96403151/rectangle_large_type_2_d4dd1b0881d6203935c6606bf54fff27.png?width=800"
   },
   {
-    "id": "rss-11",
+    "id": "rss-12",
     "title": "死なないための、プロダクトマネジメント",
     "source": "note",
     "date": "2022.12.17",
@@ -96,7 +104,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/93232796/rectangle_large_type_2_394bb9fa7bbb5e4b4bfc8c819d21008e.png?width=800"
   },
   {
-    "id": "rss-12",
+    "id": "rss-13",
     "title": "要求管理と優先度づけの世界",
     "source": "note",
     "date": "2022.12.07",
@@ -104,7 +112,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/92657534/rectangle_large_type_2_94a3e8cb90eab8991c8511c5021a78ef.png?width=800"
   },
   {
-    "id": "rss-13",
+    "id": "rss-14",
     "title": "その要求に至る意思決定を伝えるために、PRDR(=Product Requirements Decision Records)をはじめた",
     "source": "note",
     "date": "2022.05.11",
@@ -112,7 +120,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/78302669/rectangle_large_type_2_f3a73c95d8a8f69b53c010c3b1a4ccd3.png?width=800"
   },
   {
-    "id": "rss-14",
+    "id": "rss-15",
     "title": "プロダクトマネージャーはWhy, Whatの責任を持つが、Howはどうだろう",
     "source": "note",
     "date": "2022.04.07",
@@ -120,7 +128,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/75857362/rectangle_large_type_2_1c943c0813b0a2b652966cd63cf1f83f.png?width=800"
   },
   {
-    "id": "rss-15",
+    "id": "rss-16",
     "title": "BtoBtoC SaaSで三方良しを叶えるための勘所",
     "source": "note",
     "date": "2021.12.12",
@@ -128,7 +136,7 @@
     "imageUrl": "https://assets.st-note.com/production/uploads/images/67621774/rectangle_large_type_2_1c6df2d14453084593742dfbf23e13b3.png?width=800"
   },
   {
-    "id": "rss-16",
+    "id": "rss-17",
     "title": "NEWSというテーマからインタビューアプリというアイデアが生まれるまで[SPAJAM2019東京A予選]",
     "source": "note",
     "date": "2019.05.23",
