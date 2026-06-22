@@ -12,11 +12,12 @@ import {
   QrCode,
   X,
   Check,
+  ChevronDown,
 } from 'lucide-react';
 
-import staticWritings from './data/writings.json';
 import staticSpeakings from './data/speakings.json';
 import staticInterviews from './data/interviews.json';
+import qabox from './data/qabox.json';
 
 declare const __BUILD_DATE__: string;
 const LAST_UPDATED = __BUILD_DATE__;
@@ -151,8 +152,7 @@ function calculateAge() {
 }
 
 const interviews = staticInterviews as Interview[];
-const speakings = (staticSpeakings as Speaking[]).slice(0, 5);
-const writings = staticWritings as Writing[];
+const speakings = staticSpeakings as Speaking[];
 
 // ============================================================
 // Main Component
@@ -161,6 +161,8 @@ export default function Home() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [encounterActive, setEncounterActive] = useState(false);
   const [showQr, setShowQr] = useState(false);
+  const [showAllInterviews, setShowAllInterviews] = useState(false);
+  const [showAllSpeakings, setShowAllSpeakings] = useState(false);
   const flashRef = useRef<HTMLDivElement>(null);
 
   // DQ encounter transition (flash on enter, simple fade on return)
@@ -184,8 +186,6 @@ export default function Home() {
       setTimeout(() => setEncounterActive(false), 300);
     }
   }, [encounterActive, isFlipped]);
-
-  const displayedWritings = writings.slice(0, 5);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
@@ -421,53 +421,73 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Interviews */}
+        {/* Interviews — first one gets a photo (personality shows through), rest are text rows */}
         <Section title="Interviews">
-          <div className="flex flex-col gap-0">
-            {interviews.map((item) => (
-              <InterviewRow key={item.id} item={item} />
-            ))}
+          <div className="flex flex-col gap-2">
+            {(showAllInterviews ? interviews : interviews.slice(0, 3)).map((item, i) =>
+              i === 0 ? (
+                <FeaturedCard
+                  key={item.id}
+                  link={item.link}
+                  imageUrl={item.imageUrl}
+                  label={item.media}
+                  title={item.title}
+                  date={item.date}
+                />
+              ) : (
+                <InterviewRow key={item.id} item={item} />
+              )
+            )}
           </div>
+          {interviews.length > 3 && (
+            <MoreButton
+              expanded={showAllInterviews}
+              onClick={() => setShowAllInterviews((v) => !v)}
+            />
+          )}
         </Section>
 
         {/* Speaking */}
         <Section title="Speaking">
           <div className="flex flex-col gap-0">
-            {speakings.map((item) => (
+            {(showAllSpeakings ? speakings : speakings.slice(0, 3)).map((item) => (
               <SpeakingRow key={item.id} item={item} />
             ))}
           </div>
+          {speakings.length > 3 && (
+            <MoreButton
+              expanded={showAllSpeakings}
+              onClick={() => setShowAllSpeakings((v) => !v)}
+            />
+          )}
         </Section>
 
-        {/* Writings */}
+        {/* Writings — link blocks to the platforms where I write */}
         <Section title="Writings">
-          <div className="flex flex-col gap-0">
-            {displayedWritings.map((item) => (
-              <a
-                key={item.id}
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center justify-between py-3 px-2 -mx-2 rounded-lg transition-colors game-select"
-                style={{ color: 'var(--color-text)' }}
-              >
-                <span className="text-sm font-medium line-clamp-2 flex-1 mr-3">{item.title}</span>
-                <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--color-text-muted)' }}>
-                  {item.date}
-                </span>
-              </a>
-            ))}
+          <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-text-secondary)' }}>
+            プロダクトマネジメントや組織の話を中心に、考えたことを書いています。じっくりまとめた記事は note、その手前の短い思考は X（記事）に。
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            <WriteBlock
+              href="https://note.com/yukagil"
+              label="note"
+              icon={<img src="https://assets.st-note.com/poc-image/manual/note-common-images/production/icons/android-chrome-192x192.png" alt="note" className="w-6 h-6 rounded" />}
+            />
+            <WriteBlock
+              href={profile.socials.twitter}
+              label="記事"
+              labelClassName="text-xs"
+              icon={<img src="https://abs.twimg.com/responsive-web/client-web/icon-svg.ea5ff4aa.svg" alt="X" className="w-6 h-6" />}
+            />
           </div>
-          <a
-            href="https://note.com/yukagil"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-1 text-xs font-bold py-2 transition-colors link-accent"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            もっと見る（note）
-            <ExternalLink size={10} />
-          </a>
+        </Section>
+
+        {/* 質問箱 */}
+        <Section title="Ask Me">
+          <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-text-secondary)' }}>
+            気になることがあれば、匿名で気軽にどうぞ。note の質問箱で受け付けています。
+          </p>
+          <QaBoxCard />
         </Section>
 
         {/* Services */}
@@ -574,8 +594,8 @@ function QrModal({ profile, onClose }: {
   useEffect(() => {
     if (canvasRef.current) {
       QRCode.toCanvas(canvasRef.current, 'https://yukagil.github.io', {
-        width: 160,
-        margin: 2,
+        width: 176,
+        margin: 1,
         color: { dark: '#2C2A25', light: '#FFFFFF' },
       });
     }
@@ -622,18 +642,13 @@ function QrModal({ profile, onClose }: {
         </div>
 
         {/* QR code */}
-        <div className="flex justify-center px-6 py-4">
-          <canvas ref={canvasRef} className="rounded-lg" />
-        </div>
-
-        {/* URL footer */}
-        <div
-          className="px-6 py-3 text-center"
-          style={{ backgroundColor: 'var(--color-bg)', borderTop: '1px solid var(--color-border)' }}
-        >
-          <p className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
-            yukagil.github.io
-          </p>
+        <div className="flex justify-center px-6 pt-1 pb-7">
+          <div
+            className="p-3 rounded-xl"
+            style={{ border: '1px solid var(--color-border)' }}
+          >
+            <canvas ref={canvasRef} className="block" />
+          </div>
         </div>
       </div>
     </div>
@@ -681,6 +696,67 @@ function Section({ id, title, children }: { id?: string; title?: string; childre
   );
 }
 
+function MoreButton({ expanded, onClick }: {
+  expanded: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="mt-3 inline-flex items-center gap-1 text-xs font-bold py-2 transition-colors link-accent cursor-pointer"
+      style={{ color: 'var(--color-text-muted)' }}
+    >
+      {expanded ? '閉じる' : 'もっと見る'}
+      <ChevronDown
+        size={12}
+        className="transition-transform"
+        style={{ transform: expanded ? 'rotate(180deg)' : 'none' }}
+      />
+    </button>
+  );
+}
+
+function FeaturedCard({ link, imageUrl, label, title, date }: {
+  link: string;
+  imageUrl?: string;
+  label: string;
+  title: string;
+  date: string;
+}) {
+  return (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block rounded-xl overflow-hidden transition-shadow hover:shadow-md"
+      style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}
+    >
+      {imageUrl && (
+        <div className="aspect-[16/9] w-full overflow-hidden">
+          <img
+            src={imageUrl}
+            alt=""
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          />
+        </div>
+      )}
+      <div
+        className="px-4 py-3"
+        style={{ borderTop: '1px solid var(--color-border)' }}
+      >
+        <div className="flex items-center justify-between gap-3 mb-1">
+          <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
+          <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--color-text-muted)' }}>
+            {date}
+          </span>
+        </div>
+        <div className="text-sm font-medium leading-snug transition-colors link-accent">{title}</div>
+      </div>
+    </a>
+  );
+}
+
 function InterviewRow({ item }: { item: Interview }) {
   return (
     <a
@@ -696,6 +772,68 @@ function InterviewRow({ item }: { item: Interview }) {
       <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--color-text-muted)' }}>
         {item.date}
       </span>
+    </a>
+  );
+}
+
+function WriteBlock({ href, label, icon, labelClassName = 'text-sm' }: {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+  labelClassName?: string;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex items-center justify-between gap-2 rounded-xl px-4 py-3.5 transition-shadow hover:shadow-md"
+      style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}
+    >
+      <span className="flex items-center gap-2 min-w-0">
+        {icon}
+        <span className={`${labelClassName} font-bold truncate`}>{label}</span>
+      </span>
+      <ExternalLink
+        size={12}
+        className="flex-shrink-0 transition-opacity opacity-40 group-hover:opacity-100"
+        style={{ color: 'var(--color-accent)' }}
+      />
+    </a>
+  );
+}
+
+function QaBoxCard() {
+  return (
+    <a
+      href={qabox.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block rounded-xl overflow-hidden transition-shadow hover:shadow-md"
+      style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}
+    >
+      {qabox.image && (
+        <div className="aspect-[1.91/1] w-full overflow-hidden">
+          <img
+            src={qabox.image}
+            alt=""
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          />
+        </div>
+      )}
+      <div
+        className="flex items-center justify-between gap-3 px-4 py-3"
+        style={{ borderTop: '1px solid var(--color-border)' }}
+      >
+        <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+          {qabox.siteName} 質問箱
+        </span>
+        <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: 'var(--color-accent)' }}>
+          質問する
+          <ExternalLink size={10} />
+        </span>
+      </div>
     </a>
   );
 }

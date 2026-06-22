@@ -13,6 +13,7 @@ const OUTPUT_DIR = resolve(__dirname, '../src/data');
 // 設定
 const NOTE_RSS_URL = 'https://note.com/yukagil/rss';
 const MICROCMS_API_URL = 'https://yukagil.microcms.io/api/v1/articles?limit=100';
+const QABOX_URL = 'https://note.com/qa/yukagil';
 
 // リトライ設定
 const MAX_RETRIES = 4;
@@ -84,6 +85,54 @@ async function fetchWithRetry(url, options = {}, label = url) {
     }
   }
   throw new Error(`${label} failed after ${MAX_RETRIES} attempts: ${lastError.message}`);
+}
+
+// --- OGP (質問箱) ---
+function decodeEntities(s) {
+  return s
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;|&#x27;/gi, "'");
+}
+
+function extractMeta(html, key) {
+  const patterns = [
+    new RegExp(`<meta[^>]+(?:property|name)=["']${key}["'][^>]*content=["']([^"']*)["']`, 'i'),
+    new RegExp(`<meta[^>]+content=["']([^"']*)["'][^>]*(?:property|name)=["']${key}["']`, 'i'),
+  ];
+  for (const re of patterns) {
+    const m = html.match(re);
+    if (m) return decodeEntities(m[1]).trim();
+  }
+  return '';
+}
+
+async function fetchQaBox() {
+  console.log('📡 Fetching OGP for 質問箱...');
+
+  const response = await fetchWithRetry(
+    QABOX_URL,
+    { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PortfolioBuild/1.0)' } },
+    '質問箱 OGP'
+  );
+
+  const html = await response.text();
+  const data = {
+    title: extractMeta(html, 'og:title'),
+    description: extractMeta(html, 'og:description'),
+    image: extractMeta(html, 'og:image'),
+    url: extractMeta(html, 'og:url') || QABOX_URL,
+    siteName: extractMeta(html, 'og:site_name'),
+  };
+
+  if (!data.image || !data.title) {
+    throw new Error('質問箱 OGP missing required og:image/og:title');
+  }
+
+  const outputPath = saveJson('qabox.json', data);
+  console.log(`✅ Successfully saved 質問箱 OGP to ${outputPath}`);
 }
 
 // --- RSS (note.com) ---
@@ -310,6 +359,13 @@ async function main() {
   console.log('🚀 Starting data fetch...\n');
 
   ensureOutputDir();
+
+  // 質問箱OGPは任意データ。失敗してもビルドは止めず、既存JSONを保持する。
+  try {
+    await fetchQaBox();
+  } catch (e) {
+    console.warn(`⚠️ 質問箱 OGP fetch failed: ${e.message}. Existing qabox.json preserved.`);
+  }
 
   const results = await Promise.allSettled([fetchRSS(), fetchMicroCMS()]);
   const failures = results.filter((r) => r.status === 'rejected');

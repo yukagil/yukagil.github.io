@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-type Shape = 'circle' | 'rect' | 'square';
+type Shape = 'circle' | 'rect' | 'u';
 
 interface Particle {
   x: number;
@@ -50,7 +50,7 @@ function pickColor(): string {
   return COLORS[COLORS.length - 1].color;
 }
 
-const SHAPES: Shape[] = ['circle', 'rect', 'square'];
+const SHAPES: Shape[] = ['circle', 'rect', 'u'];
 
 // --- Tuning ---
 const SPAWN_DESKTOP = 80;
@@ -98,13 +98,23 @@ function drawParticle(ctx: CanvasRenderingContext2D, p: Particle) {
   ctx.fillStyle = p.color;
 
   if (p.shape === 'circle') {
+    // O — filled disc
     ctx.beginPath();
     ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
     ctx.fill();
   } else if (p.shape === 'rect') {
+    // I — horizontal bar
     ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
   } else {
-    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+    // U — filled cup: flat top (ends joined), straight sides, rounded bottom
+    const half = p.size / 2;
+    ctx.beginPath();
+    ctx.moveTo(half, -half);              // top-right
+    ctx.lineTo(half, 0);                  // down right side
+    ctx.arc(0, 0, half, 0, Math.PI, false); // rounded bottom → (-half, 0)
+    ctx.lineTo(-half, -half);             // up left side
+    ctx.closePath();                      // flat top connects the two ends
+    ctx.fill();
   }
 
   ctx.restore();
