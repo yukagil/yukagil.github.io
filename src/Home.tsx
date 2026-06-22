@@ -13,6 +13,7 @@ import {
   X,
   Check,
   ChevronDown,
+  MessageCircle,
 } from 'lucide-react';
 
 import staticSpeakings from './data/speakings.json';
@@ -137,7 +138,7 @@ const services: ServiceItem[] = [
   },
   {
     name: 'プロダクトコーチング(定期)',
-    detail: '目安: パーソナルトレーニング程度 / 月2〜4回のMTG＋非同期サポート',
+    detail: '目安: パーソナルジム程度 / 月2〜4回のMTG＋非同期サポート',
     formNote: true,
   },
 ];
@@ -474,20 +475,20 @@ export default function Home() {
               icon={<img src="https://assets.st-note.com/poc-image/manual/note-common-images/production/icons/android-chrome-192x192.png" alt="note" className="w-6 h-6 rounded" />}
             />
             <WriteBlock
-              href={profile.socials.twitter}
+              href="https://x.com/yukagil/articles"
               label="記事"
               labelClassName="text-xs"
               icon={<img src="https://abs.twimg.com/responsive-web/client-web/icon-svg.ea5ff4aa.svg" alt="X" className="w-6 h-6" />}
             />
           </div>
-        </Section>
 
-        {/* 質問箱 */}
-        <Section title="Ask Me">
-          <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--color-text-secondary)' }}>
-            気になることがあれば、匿名で気軽にどうぞ。note の質問箱で受け付けています。
-          </p>
-          <QaBoxCard />
+          {/* 質問箱 — 記事やプロダクトマネジメントへの質問はこちら */}
+          <div className="mt-5">
+            <p className="text-xs mb-2" style={{ color: 'var(--color-text-muted)' }}>
+              ちょっとした疑問でも大歓迎です。気軽に投げてください！
+            </p>
+            <QaBoxCard />
+          </div>
         </Section>
 
         {/* Services */}
@@ -809,31 +810,18 @@ function QaBoxCard() {
       href={qabox.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-xl overflow-hidden transition-shadow hover:shadow-md"
+      aria-label="note 質問箱"
+      className="group flex items-center justify-between gap-2 rounded-xl px-4 py-3.5 transition-shadow hover:shadow-md"
       style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}
     >
-      {qabox.image && (
-        <div className="aspect-[1.91/1] w-full overflow-hidden">
-          <img
-            src={qabox.image}
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          />
-        </div>
-      )}
-      <div
-        className="flex items-center justify-between gap-3 px-4 py-3"
-        style={{ borderTop: '1px solid var(--color-border)' }}
-      >
-        <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
-          {qabox.siteName} 質問箱
-        </span>
-        <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: 'var(--color-accent)' }}>
-          質問する
-          <ExternalLink size={10} />
-        </span>
-      </div>
+      <span className="flex items-center gap-2 min-w-0">
+        <MessageCircle size={18} className="flex-shrink-0" style={{ color: 'var(--color-text-muted)' }} />
+        <span className="text-sm font-bold truncate">note質問箱</span>
+      </span>
+      <span className="inline-flex items-center gap-1 text-xs font-bold flex-shrink-0" style={{ color: 'var(--color-accent)' }}>
+        質問する
+        <ExternalLink size={12} />
+      </span>
     </a>
   );
 }
