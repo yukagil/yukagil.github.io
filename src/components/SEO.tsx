@@ -15,7 +15,14 @@ interface SEOProps {
 }
 
 const baseUrl = profile.url;
-const defaultImage = profile.imageUrl;
+
+// schema.org / OGP の image は絶対URLを要求する。自前ホスト画像は /images/... の
+// 相対パスで持っているのでここで絶対化する
+function absUrl(url: string): string {
+  return url.startsWith('/') ? `${baseUrl}${url}` : url;
+}
+
+const defaultImage = absUrl(profile.imageUrl);
 const defaultTitle = `${profile.name} | ${profile.jobTitle}`;
 const defaultDescription = profile.description;
 
@@ -53,7 +60,7 @@ export default function SEO({
         alternateName: profile.handle,
         jobTitle: profile.jobTitle,
         description: profile.description,
-        image: profile.imageUrl,
+        image: absUrl(profile.imageUrl),
         url: baseUrl,
         sameAs: Object.values(profile.socials),
         address: {
@@ -126,7 +133,7 @@ export default function SEO({
             datePublished: toIsoDate(w.date),
             author: { '@id': `${baseUrl}/#person` },
             publisher: { '@type': 'Organization', name: w.source },
-            ...(w.imageUrl ? { image: w.imageUrl } : {}),
+            ...(w.imageUrl ? { image: absUrl(w.imageUrl) } : {}),
           },
         })),
       },
@@ -142,12 +149,13 @@ export default function SEO({
           item: {
             '@type': 'Event',
             name: s.title,
+            ...(s.summary ? { description: s.summary } : {}),
             startDate: toIsoDate(s.date),
             eventStatus: 'https://schema.org/EventScheduled',
             organizer: { '@type': 'Organization', name: s.event },
             performer: { '@id': `${baseUrl}/#person` },
             ...(s.mainLink && s.mainLink !== '#' ? { url: s.mainLink } : {}),
-            ...(s.imageUrl ? { image: s.imageUrl } : {}),
+            ...(s.imageUrl ? { image: absUrl(s.imageUrl) } : {}),
           },
         })),
       },
@@ -163,11 +171,12 @@ export default function SEO({
           item: {
             '@type': 'Article',
             headline: n.title,
+            ...(n.summary ? { description: n.summary } : {}),
             url: n.link,
             datePublished: toIsoDate(n.date),
             about: { '@id': `${baseUrl}/#person` },
             publisher: { '@type': 'Organization', name: n.media },
-            ...(n.imageUrl ? { image: n.imageUrl } : {}),
+            ...(n.imageUrl ? { image: absUrl(n.imageUrl) } : {}),
           },
         })),
       },

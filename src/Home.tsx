@@ -38,6 +38,7 @@ interface Speaking {
   date: string;
   event: string;
   title: string;
+  summary?: string;
   mainLink: string;
   relatedLinks: RelatedLink[];
   imageUrl?: string;
@@ -48,6 +49,7 @@ interface Interview {
   date: string;
   media: string;
   title: string;
+  summary?: string;
   link: string;
   imageUrl?: string;
 }
@@ -404,6 +406,7 @@ export default function Home() {
                     label={item.media}
                     title={item.title}
                     date={item.date}
+                    summary={item.summary}
                   />
                 ) : (
                   <InterviewRow item={item} />
@@ -838,12 +841,13 @@ function MoreButton({ expanded, onClick }: {
   );
 }
 
-function FeaturedCard({ link, imageUrl, label, title, date }: {
+function FeaturedCard({ link, imageUrl, label, title, date, summary }: {
   link: string;
   imageUrl?: string;
   label: string;
   title: string;
   date: string;
+  summary?: string;
 }) {
   return (
     <a
@@ -872,6 +876,11 @@ function FeaturedCard({ link, imageUrl, label, title, date }: {
           <DateText date={date} className="font-mono text-xs flex-shrink-0" />
         </div>
         <div className="text-sm font-medium leading-snug transition-colors link-accent">{title}</div>
+        {summary && (
+          <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+            {summary}
+          </p>
+        )}
       </div>
     </a>
   );
@@ -883,13 +892,19 @@ function InterviewRow({ item }: { item: Interview }) {
       href={item.link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex items-center justify-between py-3 px-2 -mx-2 rounded-lg transition-colors game-select"
+      className="group block py-3 px-2 -mx-2 rounded-lg transition-colors game-select"
     >
-      <div className="flex-1 min-w-0 mr-3">
-        <div className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{item.media}</div>
-        <div className="text-sm font-medium line-clamp-2">{item.title}</div>
+      {/* メタ行（媒体・日付）。タイトルとサマリは全幅を使えるようにする */}
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-xs truncate" style={{ color: 'var(--color-text-muted)' }}>{item.media}</span>
+        <DateText date={item.date} className="font-mono text-xs flex-shrink-0" />
       </div>
-      <DateText date={item.date} className="font-mono text-xs flex-shrink-0" />
+      <div className="text-sm font-medium line-clamp-2">{item.title}</div>
+      {item.summary && (
+        <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--color-text-secondary)' }}>
+          {item.summary}
+        </p>
+      )}
     </a>
   );
 }
@@ -948,24 +963,28 @@ function SpeakingRow({ item }: { item: Speaking }) {
     <div
       className="group py-3 px-2 -mx-2 rounded-lg transition-colors game-select"
     >
-      <div className="flex items-center justify-between">
-        <div className="flex-1 min-w-0 mr-3">
-          <div className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{item.event}</div>
-          {item.mainLink && item.mainLink !== '#' ? (
-            <a
-              href={item.mainLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium line-clamp-2 transition-colors link-accent"
-            >
-              {item.title}
-            </a>
-          ) : (
-            <span className="text-sm font-medium line-clamp-2">{item.title}</span>
-          )}
-        </div>
+      {/* メタ行（イベント・日付）。タイトルとサマリは全幅を使えるようにする */}
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-xs truncate" style={{ color: 'var(--color-text-muted)' }}>{item.event}</span>
         <DateText date={item.date} className="font-mono text-xs flex-shrink-0" />
       </div>
+      {item.mainLink && item.mainLink !== '#' ? (
+        <a
+          href={item.mainLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-sm font-medium line-clamp-2 transition-colors link-accent"
+        >
+          {item.title}
+        </a>
+      ) : (
+        <span className="block text-sm font-medium line-clamp-2">{item.title}</span>
+      )}
+      {item.summary && (
+        <p className="text-xs mt-0.5 line-clamp-2" style={{ color: 'var(--color-text-secondary)' }}>
+          {item.summary}
+        </p>
+      )}
       {item.relatedLinks && item.relatedLinks.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-1">
           {item.relatedLinks.map((link, idx) => {

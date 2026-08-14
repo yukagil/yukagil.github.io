@@ -113,6 +113,7 @@ function buildLlmsTxt() {
   for (const s of speakings) {
     const related = (s.relatedLinks ?? []).map((r) => `[${r.label}](${r.url})`).join(', ');
     L.push(`- [${s.title}](${s.mainLink}) — ${s.event}, ${s.date}${related ? ` (${related})` : ''}`);
+    if (s.summary) L.push(`  - ${s.summary}`);
   }
   L.push('');
 
@@ -122,6 +123,7 @@ function buildLlmsTxt() {
   L.push('');
   for (const i of interviews) {
     L.push(`- [${i.title}](${i.link}) — ${i.media}, ${i.date}`);
+    if (i.summary) L.push(`  - ${i.summary}`);
   }
   L.push('');
 
@@ -178,11 +180,20 @@ if (!existsSync(PUBLIC_DATA_DIR)) mkdirSync(PUBLIC_DATA_DIR, { recursive: true }
 writeFileSync(resolve(PUBLIC_DIR, 'llms.txt'), buildLlmsTxt());
 writeFileSync(resolve(PUBLIC_DIR, 'sitemap.xml'), buildSitemap());
 
+// 自前ホスト画像は /images/... の相対パスで持っているので、配信用には絶対URLにする
+const absUrl = (url) => (url && url.startsWith('/') ? `${BASE_URL}${url}` : url);
+
 // 機械可読エンドポイント。日付は ISO 形式を併記して機械が扱いやすくする
+const enrich = (item) => ({
+  ...item,
+  dateIso: toIsoDate(item.date),
+  ...(item.imageUrl ? { imageUrl: absUrl(item.imageUrl) } : {}),
+});
+
 const endpoints = {
-  'writings.json': writings.map((w) => ({ ...w, dateIso: toIsoDate(w.date) })),
-  'speakings.json': speakings.map((s) => ({ ...s, dateIso: toIsoDate(s.date) })),
-  'interviews.json': interviews.map((i) => ({ ...i, dateIso: toIsoDate(i.date) })),
+  'writings.json': writings.map(enrich),
+  'speakings.json': speakings.map(enrich),
+  'interviews.json': interviews.map(enrich),
   'profile.json': profile,
 };
 
