@@ -14,6 +14,7 @@ import {
   Check,
   ChevronDown,
   MessageCircle,
+  Copy,
 } from 'lucide-react';
 
 import staticSpeakings from './data/speakings.json';
@@ -386,6 +387,8 @@ export default function Home() {
               </li>
             ))}
           </ol>
+
+          <ProfileBios />
         </Section>
 
         {/* Interviews — first one gets a photo (personality shows through), rest are text rows */}
@@ -687,6 +690,131 @@ function Section({ id, title, children }: { id?: string; title?: string; childre
       )}
       {children}
     </section>
+  );
+}
+
+// 登壇・寄稿の主催者に渡すためのプロフィール文（3パターン）。
+// デフォルトは閉じた状態。中身は常に DOM にあるのでエージェントからは全量読める
+function ProfileBios() {
+  const [open, setOpen] = useState(false);
+  // 300字版をデフォルト表示にする
+  const [selected, setSelected] = useState(profile.bios.length - 1);
+
+  return (
+    <div className="mt-6 pt-5" style={{ borderTop: '1px dashed var(--color-border)' }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-controls="profile-bios"
+        className="inline-flex items-center gap-1.5 text-xs font-bold py-1 transition-colors link-accent cursor-pointer"
+        style={{ color: 'var(--color-text-muted)' }}
+      >
+        <ChevronDown
+          size={12}
+          className="transition-transform"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(-90deg)' }}
+        />
+        プロフィール文（登壇・寄稿用）
+      </button>
+
+      <div id="profile-bios" hidden={!open} className="mt-3">
+        <p className="text-xs mb-3" style={{ color: 'var(--color-text-muted)' }}>
+          ご紹介の際は、文字数に合わせてこちらをお使いください。
+        </p>
+
+        {/* 文字数セレクタ */}
+        <div
+          className="inline-flex gap-1 p-1 rounded-xl"
+          style={{ backgroundColor: 'var(--color-surface)' }}
+        >
+          {profile.bios.map((bio, i) => {
+            const isSelected = i === selected;
+            return (
+              <button
+                key={bio.label}
+                onClick={() => setSelected(i)}
+                aria-pressed={isSelected}
+                className="px-3 py-1.5 rounded-lg font-mono text-xs transition-all press-in cursor-pointer"
+                style={
+                  isSelected
+                    ? {
+                        backgroundColor: 'var(--color-bg)',
+                        color: 'var(--color-text)',
+                        fontWeight: 700,
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.06)',
+                      }
+                    : { color: 'var(--color-text-muted)' }
+                }
+              >
+                {parseInt(bio.label, 10)}字
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 3本とも DOM に残し、非選択は hidden で隠す（エージェントには全量届く） */}
+        <div className="mt-3">
+          {profile.bios.map((bio, i) => (
+            <div key={bio.label} hidden={i !== selected}>
+              <BioCard text={bio.text} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BioCard({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // clipboard API が使えない環境（非セキュアコンテキスト等）へのフォールバック
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+      } finally {
+        document.body.removeChild(ta);
+      }
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div
+      className="rounded-xl px-4 py-3.5"
+      style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)' }}
+    >
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <span className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
+          {text.length}字
+        </span>
+        <button
+          onClick={handleCopy}
+          className="inline-flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-lg transition-all press-in cursor-pointer"
+          style={{
+            backgroundColor: 'var(--color-bg)',
+            color: copied ? 'var(--color-accent)' : 'var(--color-text-muted)',
+          }}
+          aria-label={`${text.length}字のプロフィール文をコピー`}
+        >
+          {copied ? <Check size={12} strokeWidth={2.5} /> : <Copy size={12} />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <p className="text-xs" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+        {text}
+      </p>
+    </div>
   );
 }
 

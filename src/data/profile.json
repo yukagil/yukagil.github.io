@@ -11,6 +11,20 @@
   ],
   "about": "プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。個の馬力ではなく、組織で課題を解決するアプローチを大切にしています。",
   "description": "プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。10年以上のプロダクトづくりの経験をベースに、人・組織・事業・経営それぞれのレイヤーにおける、理論と実践の両方に基づいた再現性のある現実的なアプローチを大切にしています。",
+  "bios": [
+    {
+      "label": "50文字程度",
+      "text": "Muture執行役員CPO、マルイユナイト取締役CPO。丸井グループのプロダクトと組織づくりを推進。"
+    },
+    {
+      "label": "150文字程度",
+      "text": "Muture執行役員CPO、マルイユナイト取締役CPO。DeNAでエンジニアとしてキャリアをスタートし、スタートアップでOMOプラットフォームをVP of Productとしてリード。その後Mutureに参画し、マルイユナイトの設立に携わる。丸井グループのプロダクトと組織づくりを推進している。"
+    },
+    {
+      "label": "300文字程度",
+      "text": "DeNAでソフトウェアエンジニアとしてキャリアをスタートし、スマートフォンアプリやグローバルプラットフォームの開発・プロダクトマネジメントを担当。その後スタートアップで、飲食・小売の新しい店舗体験を実現するOMOプラットフォームをVP of Productとしてリード。2023年にMuture入社。丸井グループのプロダクトマネジメント・組織戦略を支援し、ライフスタイルアプリのリニューアルやマルイユナイトの設立に携わる。現在はMuture執行役員CPO、マルイユナイト取締役CPOとして、小売・金融にデジタルを掛け合わせ、丸井グループの「好きを応援するビジネス」を推進している。"
+    }
+  ],
   "knowsAbout": [
     "Product Management",
     "UX Strategy",
@@ -48,9 +62,9 @@
       "company": "Muture",
       "description": "プロダクト開発と組織変革を両立し、持続可能な変革を支援するDXパートナー",
       "role": "執行役員 CPO",
-      "period": "2023 - now",
-      "startYear": "2023",
-      "endYear": null,
+      "period": "2023.02 - now",
+      "startDate": "2023-02",
+      "endDate": null,
       "isCurrent": true,
       "website": "https://muture.jp/"
     },
@@ -58,9 +72,9 @@
       "company": "marui unite",
       "description": "丸井グループのデジタルプロダクト開発を行うテックカンパニー",
       "role": "取締役 CPO",
-      "period": "2024 - now",
-      "startYear": "2024",
-      "endYear": null,
+      "period": "2024.10 - now",
+      "startDate": "2024-10",
+      "endDate": null,
       "isCurrent": true,
       "website": "https://marui-unite.co.jp/"
     },
@@ -68,9 +82,9 @@
       "company": "Showcase Gig",
       "description": "モバイルオーダープラットフォーム「O:der」を提供。次世代店舗体験を創出",
       "role": "VP of Product",
-      "period": "2020 - 2023",
-      "startYear": "2020",
-      "endYear": "2023",
+      "period": "2020.03 - 2023.02",
+      "startDate": "2020-03",
+      "endDate": "2023-02",
       "isCurrent": false,
       "website": "https://www.showcase-gig.com/"
     },
@@ -78,9 +92,9 @@
       "company": "DeNA",
       "description": "ゲーム、スポーツ、ヘルスケアなど多角的に事業を展開するIT企業",
       "role": "Engineer → PM",
-      "period": "2016 - 2020",
-      "startYear": "2016",
-      "endYear": "2020",
+      "period": "2016.04 - 2020.03",
+      "startDate": "2016-04",
+      "endDate": "2020-03",
       "isCurrent": false,
       "website": "https://dena.com/"
     }

@@ -79,8 +79,8 @@ export default function SEO({
         hasOccupation: profile.experiences.map((e) => ({
           '@type': 'Role',
           roleName: e.role,
-          startDate: e.startYear,
-          ...(e.endYear ? { endDate: e.endYear } : {}),
+          startDate: e.startDate,
+          ...(e.endDate ? { endDate: e.endDate } : {}),
           worksFor: { '@type': 'Organization', name: e.company },
         })),
         contactPoint: profile.contact.preferredChannels.map((c) => ({
