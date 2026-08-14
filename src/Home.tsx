@@ -3,6 +3,7 @@ import QRCode from 'qrcode';
 import SEO from './components/SEO';
 import ParticleBackground from './components/ParticleBackground';
 import DesignLab from './components/DesignLab';
+import ScrollHud from './components/ScrollHud';
 import {
   ExternalLink,
   Linkedin,
@@ -160,6 +161,7 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <SEO />
+      <ScrollHud />
 
       {/* ============================================================ */}
       {/* ZONE 1: The Card */}

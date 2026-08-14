@@ -255,30 +255,22 @@ body {
   display: none !important;
 }
 
-/* ============================================================
-   Design variants — 探索用。DesignLab.tsx が <html data-variant>
-   を切り替える。DOM は変わらないので、プリレンダリング出力と
-   エージェント向けの内容は base のまま影響を受けない。
-   採用が決まったら勝った案を通常のスタイルへ昇格させ、
-   このブロックごと削除する。
-   ============================================================ */
-
-/* ---- Menu: Zone 2 を「選べるもの」として並べる ---------------- */
+/* ===== Zone 2: 選べるものとして並べる（旧 Menu バリアント / 本採用） ===== */
 /* 見出しをメニューのカテゴリ行にする。赤い縦棒をやめ、
    カーソル記号 + 右へ伸びる罫線で「区切り」を示す */
-[data-variant='menu'] main section > h2 {
+main section > h2 {
   display: flex;
   align-items: center;
   gap: 10px;
   border-left: none;
   padding-left: 0;
 }
-[data-variant='menu'] main section > h2::before {
+main section > h2::before {
   content: '▸';
   color: var(--color-accent);
   font-size: 0.8em;
 }
-[data-variant='menu'] main section > h2::after {
+main section > h2::after {
   content: '';
   flex: 1;
   height: 1px;
@@ -286,69 +278,37 @@ body {
 }
 
 /* 行を「枠」に。境界を引き、選択時に少し右へ送る */
-[data-variant='menu'] main .game-select {
+main .game-select {
   border-bottom: 1px solid var(--color-border);
   border-radius: 0;
   transition: transform var(--duration-fast) var(--ease-smooth),
               background-color var(--duration-fast) ease;
 }
-[data-variant='menu'] main .game-select:hover,
-[data-variant='menu'] main .game-select:focus-within {
+main .game-select:hover,
+main .game-select:focus-within {
   transform: translateX(4px);
 }
 /* カーソルを常時うっすら見せ、選択時にはっきりさせる */
-[data-variant='menu'] main .game-select::before {
+main .game-select::before {
   transform: translateY(-50%) scale(0.5);
   opacity: 0.25;
 }
-[data-variant='menu'] main .game-select:hover::before,
-[data-variant='menu'] main .game-select:focus-within::before {
+main .game-select:hover::before,
+main .game-select:focus-within::before {
   transform: translateY(-50%) scale(1);
   opacity: 1;
 }
 
-/* ---- Console: カード裏のステータス画面の語彙を本文へ ---------- */
-/* 見出しを等幅にし、破線で全幅に区切る */
-[data-variant='console'] main section > h2 {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  border-left: none;
-  padding-left: 0;
-  padding-bottom: 6px;
-  border-bottom: 1px dashed var(--color-border);
-  color: var(--color-text-muted);
-}
-[data-variant='console'] main section > h2::before {
-  content: '// ';
-  color: var(--color-accent);
-}
 
-/* 行間を詰め、区切りを破線に。面ではなく線で構造を出す */
-[data-variant='console'] main .game-select {
-  border-bottom: 1px dashed var(--color-border);
-  border-radius: 0;
-}
-[data-variant='console'] main .game-select:hover {
-  background-color: var(--color-surface);
-}
-[data-variant='console'] main .game-select::before {
-  display: none;
-}
-/* 経歴の期間・実績の日付など、等幅の数字を主役に引き上げる */
-[data-variant='console'] main time,
-[data-variant='console'] main .font-mono {
-  color: var(--color-text);
-}
+/* ============================================================
+   Design variants — 探索用。DesignLab.tsx が <html data-variant>
+   を切り替える。プリレンダリング出力は素の状態のままなので、
+   エージェント向けの内容は影響を受けない。
+   採用が決まったら通常スタイルへ昇格させ、このブロックを削除する。
+   ============================================================ */
 
-/* ---- HUD: 本文は base のまま。常駐バーぶんだけ上に余白 -------- */
-[data-variant='hud'] main {
-  padding-top: 8px;
-}
-
-/* 探索中はアニメーションの再生を待たずに中身を見たい */
-[data-variant='menu'] .animate-section,
-[data-variant='console'] .animate-section,
-[data-variant='hud'] .animate-section {
+/* ---- Rail: 右の固定ナビ。本文レイアウトは変えない ------------ */
+[data-variant='rail'] .animate-section {
   opacity: 1;
   transform: none;
 }

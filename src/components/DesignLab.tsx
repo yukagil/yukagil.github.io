@@ -1,57 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Linkedin, NotebookPen } from 'lucide-react';
-import profile from '../data/profile.json';
+import { useScrolledPastHero } from '../hooks/useScrolledPastHero';
 
 // ============================================================
 // デザイン探索用の一時的な仕組み。
 //
-// - 見た目の切り替えは <html data-variant="..."> の CSS で行う（DOM は不変）。
-//   プリレンダリング結果が変わらないので、クローラ／エージェント向けの
-//   出力には一切影響しない。
-// - パネルは ?lab を付けたときだけ出る。通常の来訪者には見えない。
+// - 切り替えは <html data-variant="..."> の CSS。プリレンダリング結果は
+//   常に素の状態なので、クローラ／エージェント向け出力に影響しない。
+// - パネルは ?lab を付けたときだけ出る。
+// - 採用が決まった案はここから消して通常スタイルへ昇格させ、
+//   却下された案も消す（残すと選択肢が濁る）。
+//   昇格済み: Menu / HUD ・ 却下: Console / Timeline / Sheet /
+//   Dark / Mincho / Paper / Wide
 // - 不要になったら Home.tsx の import と <DesignLab /> を消し、
 //   index.css の「Design variants」ブロックを削れば完全に消える。
 // ============================================================
 
-export type Variant = 'base' | 'menu' | 'console' | 'hud';
+export type Variant = 'base' | 'rail';
 
 const VARIANTS: { id: Variant; label: string; note: string }[] = [
-  { id: 'base', label: 'Base', note: '現状。比較の基準' },
-  { id: 'menu', label: 'Menu', note: 'ゲームメニュー。選べるものとして並べる' },
-  { id: 'console', label: 'Console', note: 'ステータス画面。カード裏の語彙を本文へ' },
-  { id: 'hud', label: 'HUD', note: 'Zone 1 が縮んで常駐する' },
+  { id: 'base', label: 'Base', note: '現状（Menu + HUD 反映済み）' },
+  { id: 'rail', label: 'Rail', note: '右に現在地を示すナビ。HUD と一緒に現れる' },
 ];
 
 const STORAGE_KEY = 'design-variant';
-
-// HUD に出す連絡先。肩書きは Zone 1 で読めているので繰り返さず、
-// スクロール後に「連絡できる」ことだけを常駐させる
-const HUD_LINKS = [
-  {
-    label: 'X',
-    href: profile.socials.twitter,
-    icon: (
-      <img
-        src="https://abs.twimg.com/responsive-web/client-web/icon-svg.ea5ff4aa.svg"
-        alt=""
-        className="w-4 h-4"
-      />
-    ),
-  },
-  { label: 'LinkedIn', href: profile.socials.linkedin, icon: <Linkedin size={16} /> },
-  { label: 'note', href: profile.socials.note, icon: <NotebookPen size={16} /> },
-  {
-    label: 'YOUTRUST',
-    href: profile.socials.youtrust,
-    icon: (
-      <img
-        src="https://daxgddo8oz9ps.cloudfront.net/assets/common/favicon-f68a538cb715f05c5bcda84989832063f19220d53cf957de83385ca7ba3d9abc.png"
-        alt=""
-        className="w-4 h-4 grayscale"
-      />
-    ),
-  },
-];
 
 export default function DesignLab() {
   const [enabled, setEnabled] = useState(false);
@@ -59,15 +30,16 @@ export default function DesignLab() {
   const [open, setOpen] = useState(true);
 
   // 起動判定はクライアントのみ。localStorage を初期値として読むと
-  // サーバー出力（常に base）と食い違ってハイドレーションが壊れるため、
-  // 意図的にマウント後まで遅らせている。
+  // サーバー出力と食い違ってハイドレーションが壊れるため、意図的に
+  // マウント後まで遅らせている。
   useEffect(() => {
     const hasFlag = window.location.search.includes('lab');
     const stored = window.localStorage.getItem(STORAGE_KEY) as Variant | null;
-    if (!hasFlag && !stored) return;
+    const known = VARIANTS.some((v) => v.id === stored);
+    if (!hasFlag && !known) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setEnabled(true);
-    if (stored) setVariant(stored);
+    if (known && stored) setVariant(stored);
   }, []);
 
   useEffect(() => {
@@ -80,51 +52,52 @@ export default function DesignLab() {
 
   return (
     <>
-      {variant === 'hud' && <ScrollHud />}
+      {variant === 'rail' && <SectionRail />}
 
-      <div
-        className="fixed z-[200] font-mono"
-        style={{ right: '16px', bottom: '16px' }}
-      >
+      <div className="fixed z-[200] font-mono" style={{ right: '16px', bottom: '16px' }}>
         {open ? (
           <div
             className="rounded-xl overflow-hidden shadow-lg"
-            style={{ backgroundColor: '#fff', border: '1px solid var(--color-border-strong)', width: '208px' }}
+            style={{
+              backgroundColor: '#fff',
+              border: '1px solid #2C2A25',
+              color: '#2C2A25',
+              width: '212px',
+            }}
           >
             <div
               className="flex items-center justify-between px-3 py-2"
-              style={{ borderBottom: '1px solid var(--color-border)' }}
+              style={{ borderBottom: '1px solid #D8D6D0' }}
             >
               <span className="text-xs font-bold">design lab</span>
               <button
                 onClick={() => setOpen(false)}
                 className="text-xs px-1 cursor-pointer"
-                style={{ color: 'var(--color-text-muted)' }}
+                style={{ color: '#6E6C64' }}
                 aria-label="パネルを閉じる"
               >
                 －
               </button>
             </div>
 
-            <div className="p-2 flex flex-col gap-1">
+            <div className="p-2 flex flex-col gap-0.5">
               {VARIANTS.map((v) => {
                 const active = v.id === variant;
                 return (
                   <button
                     key={v.id}
                     onClick={() => setVariant(v.id)}
-                    title={v.note}
-                    className="text-left px-2 py-1.5 rounded-lg text-xs transition-colors cursor-pointer"
+                    className="text-left px-2 py-1.5 rounded-lg text-xs cursor-pointer"
                     style={
                       active
-                        ? { backgroundColor: 'var(--color-accent)', color: '#fff', fontWeight: 700 }
-                        : { color: 'var(--color-text)' }
+                        ? { backgroundColor: '#D03530', color: '#fff', fontWeight: 700 }
+                        : { color: '#2C2A25' }
                     }
                   >
                     {v.label}
                     <span
                       className="block text-[10px] leading-tight mt-0.5"
-                      style={{ color: active ? 'rgba(255,255,255,0.8)' : 'var(--color-text-muted)' }}
+                      style={{ color: active ? 'rgba(255,255,255,0.85)' : '#6E6C64' }}
                     >
                       {v.note}
                     </span>
@@ -140,7 +113,7 @@ export default function DesignLab() {
                 setEnabled(false);
               }}
               className="w-full px-3 py-2 text-[10px] cursor-pointer"
-              style={{ borderTop: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
+              style={{ borderTop: '1px solid #D8D6D0', color: '#6E6C64' }}
             >
               ラボを終了して通常表示に戻す
             </button>
@@ -149,7 +122,7 @@ export default function DesignLab() {
           <button
             onClick={() => setOpen(true)}
             className="rounded-full px-3 py-2 text-xs font-bold shadow-lg cursor-pointer"
-            style={{ backgroundColor: 'var(--color-accent)', color: '#fff' }}
+            style={{ backgroundColor: '#D03530', color: '#fff' }}
           >
             lab: {variant}
           </button>
@@ -159,53 +132,89 @@ export default function DesignLab() {
   );
 }
 
-// Zone 1 を通り過ぎたら現れる小さな常駐バー（HUD バリアント専用）
-function ScrollHud() {
-  const [shown, setShown] = useState(false);
+// ============================================================
+// Rail — 右に現在地を示す固定ナビ。
+// Zone 1（ヒーロー）では出さず、HUD と同じタイミングで現れる。
+// ============================================================
+
+function SectionRail() {
+  const shown = useScrolledPastHero();
+  // 見出しは DOM を測って得るしかないので、マウント後に一度だけ読む。
+  // 現在地とまとめて1つの state にしている
+  const [state, setState] = useState<{ sections: string[]; active: string }>({
+    sections: [],
+    active: '',
+  });
 
   useEffect(() => {
-    const onScroll = () => setShown(window.scrollY > window.innerHeight * 0.75);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const read = () => {
+      const headings = Array.from(
+        document.querySelectorAll<HTMLElement>('main section > h2')
+      );
+      let active = '';
+      for (const h of headings) {
+        if (h.getBoundingClientRect().top < window.innerHeight * 0.35) {
+          active = h.textContent?.trim() ?? '';
+        }
+      }
+      setState({ sections: headings.map((h) => h.textContent?.trim() ?? ''), active });
+    };
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    read();
+    window.addEventListener('scroll', read, { passive: true });
+    window.addEventListener('resize', read);
+    return () => {
+      window.removeEventListener('scroll', read);
+      window.removeEventListener('resize', read);
+    };
   }, []);
 
-  return (
-    <div
-      className="fixed top-0 left-0 right-0 z-[150] transition-all duration-300"
-      style={{
-        transform: shown ? 'translateY(0)' : 'translateY(-100%)',
-        opacity: shown ? 1 : 0,
-        backgroundColor: 'rgba(250,249,247,0.85)',
-        backdropFilter: 'blur(8px)',
-        borderBottom: '1px solid var(--color-border)',
-      }}
-    >
-      <div className="max-w-[640px] mx-auto px-4 py-2 flex items-center gap-3">
-        <img
-          src={profile.imageUrl}
-          alt=""
-          className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-          style={{ border: '1.5px solid var(--color-border-strong)' }}
-        />
-        <p className="text-sm font-bold leading-tight flex-1 min-w-0 truncate">{profile.name}</p>
+  const { sections, active } = state;
 
-        <div className="flex items-center gap-1 flex-shrink-0">
-          {HUD_LINKS.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target="_blank"
-              rel="noopener noreferrer me"
-              aria-label={l.label}
-              className="p-1.5 rounded-lg transition-colors press-in"
-              style={{ color: 'var(--color-text)' }}
-            >
-              {l.icon}
-            </a>
-          ))}
-        </div>
-      </div>
-    </div>
+  const jump = (name: string) => {
+    const target = Array.from(document.querySelectorAll('main section > h2')).find(
+      (h) => h.textContent?.trim() === name
+    );
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <nav
+      className="fixed z-[140] hidden xl:block transition-opacity duration-300"
+      style={{
+        right: 'calc(50% - 520px)',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        opacity: shown ? 1 : 0,
+        pointerEvents: shown ? 'auto' : 'none',
+      }}
+      aria-hidden={!shown}
+      aria-label="セクション"
+    >
+      <ul className="list-none flex flex-col gap-2 items-end">
+        {sections.map((name) => {
+          const on = active === name;
+          return (
+            <li key={name}>
+              <button
+                onClick={() => jump(name)}
+                className="flex flex-row-reverse items-center gap-2 font-mono text-xs transition-colors cursor-pointer"
+                style={{ color: on ? 'var(--color-text)' : 'var(--color-text-muted)' }}
+              >
+                <span
+                  className="inline-block rounded-sm transition-all"
+                  style={{
+                    width: on ? '14px' : '6px',
+                    height: '2px',
+                    backgroundColor: on ? 'var(--color-accent)' : 'var(--color-border)',
+                  }}
+                />
+                {name}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }
