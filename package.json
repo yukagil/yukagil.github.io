@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "fetch-data": "node scripts/fetch-data.js",
-    "build": "npm run fetch-data && tsc -b && vite build",
+    "gen-agent-assets": "node scripts/gen-agent-assets.js",
+    "build": "npm run fetch-data && npm run gen-agent-assets && tsc -b && BUILD_TIMESTAMP=$(node -e 'process.stdout.write(String(Date.now()))') npm run build:bundle",
+    "build:bundle": "vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",

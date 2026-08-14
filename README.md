@@ -37,6 +37,15 @@ npm run dev
 npm run build
 ```
 
+`npm run build` は次の順に走る:
+
+1. `fetch-data` — note RSS / microCMS から実績データを取得
+2. `gen-agent-assets` — llms.txt / sitemap.xml / public/data/*.json を生成
+3. `tsc -b` — 型チェック
+4. `vite build` — クライアントバンドル
+5. `vite build --ssr` — SSR バンドル
+6. `prerender` — SSR 結果を dist/index.html の `#root` に焼き込む
+
 ### データ取得のみ実行
 ```bash
 npm run fetch-data
@@ -52,19 +61,56 @@ npm run deploy
 ```
 my-portfolio/
 ├── src/
-│   ├── App.tsx           # メインコンポーネント
-│   ├── main.tsx          # エントリーポイント
-│   ├── index.css         # グローバルスタイル
-│   └── data/             # ビルド時生成される静的データ
-│       ├── writings.json
+│   ├── App.tsx             # ルーティング
+│   ├── Home.tsx            # ページ本体
+│   ├── main.tsx            # クライアントエントリ（ハイドレーション）
+│   ├── entry-server.tsx    # SSR エントリ（プリレンダリング用）
+│   ├── index.css           # グローバルスタイル
+│   ├── components/SEO.tsx  # 構造化データ(JSON-LD) + meta タグ
+│   └── data/
+│       ├── profile.json    # ★手動管理。プロフィール/経歴/サービスの正
+│       ├── writings.json   # 以下はビルド時に自動取得
 │       ├── speakings.json
-│       └── interviews.json
+│       ├── interviews.json
+│       └── qabox.json
 ├── scripts/
-│   └── fetch-data.js     # ビルド時データ取得スクリプト
+│   ├── fetch-data.js        # 外部データ取得
+│   ├── gen-agent-assets.js  # llms.txt / sitemap.xml / public/data/*.json 生成
+│   └── prerender.js         # dist/index.html に本文を焼き込む
 ├── public/
-│   └── robots.txt        # クローラーブロック設定
-└── .env                  # 環境変数（Git管理外）
+│   ├── robots.txt
+│   ├── llms.txt             # 自動生成（直接編集しない）
+│   ├── sitemap.xml          # 自動生成（直接編集しない）
+│   └── data/                # 自動生成（直接編集しない）
+└── .env                     # 環境変数（Git管理外）
 ```
+
+## エージェント対応について
+
+JS を実行しないクローラ／AIエージェントにもコンテンツが届くよう、以下を用意している。
+
+| 出力 | 内容 |
+|---|---|
+| `dist/index.html` | ビルド時に SSR して本文を焼き込み済み。JS なしで全文が読める |
+| `/llms.txt` | サイト全体の要約（Markdown）。経歴・登壇・執筆・連絡先を1枚に |
+| `/sitemap.xml` | サイトマップ |
+| `/data/*.json` | 実績データの機械可読エンドポイント（ISO 日付付き） |
+| JSON-LD | `Person` / `ProfilePage` / `ItemList(Article, Event)` / `Service` を静的出力 |
+
+### 内容を更新するとき
+
+プロフィール・経歴・提供サービスは **`src/data/profile.json` が唯一の正**。
+ここを直せば、ページ表示・JSON-LD・llms.txt のすべてに反映される。
+
+### 実装上の注意
+
+- **`prefers-reduced-motion` や `window` をレンダリング中に参照しない。**
+  サーバー側では常に未定義扱いになるため、ハイドレーション不整合を起こす。
+  参照する場合は `useEffect` で state に入れること（`ParticleBackground.tsx` 参照）
+- 日付など時刻に依存する値は `__BUILD_DATE__` / `__BUILD_YEAR__` を使う。
+  `new Date()` を直接描画するとビルド時と閲覧時でずれる
+- 実績リストは**全件を DOM に出し**、`hidden` 属性で折りたたむ。
+  `slice()` で間引くとエージェントから見えなくなる
 
 ## 開発メモ
 

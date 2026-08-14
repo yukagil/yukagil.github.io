@@ -263,3 +263,11 @@ body {
   animation: flipHint 3s var(--ease-smooth) 3s forwards;
   opacity: 0;
 }
+
+/* ===== hidden 属性の保証 =====
+   実績リストは全件を DOM に出し（クローラ／エージェントに全件届けるため）、
+   表示上は hidden 属性で折りたたむ。Tailwind の display ユーティリティに
+   打ち消されないよう明示する */
+[hidden] {
+  display: none !important;
+}

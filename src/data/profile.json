@@ -1,0 +1,111 @@
+{
+  "name": "Yuta Kanehara",
+  "tagline": "良い組織が、良いプロダクトをつくる",
+  "jobTitle": "Product Manager",
+  "handle": "@yukagil",
+  "url": "https://yukagil.github.io",
+  "imageUrl": "https://storage.googleapis.com/studio-cms-assets/projects/Z9qp7nJGOP/s-1120x1120_v-fs_webp_2a3f9622-e54d-4f8b-8670-510ba156906d_small.webp",
+  "positions": [
+    "Muture 執行役員 CPO",
+    "marui unite 取締役 CPO"
+  ],
+  "about": "プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。個の馬力ではなく、組織で課題を解決するアプローチを大切にしています。",
+  "description": "プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。10年以上のプロダクトづくりの経験をベースに、人・組織・事業・経営それぞれのレイヤーにおける、理論と実践の両方に基づいた再現性のある現実的なアプローチを大切にしています。",
+  "knowsAbout": [
+    "Product Management",
+    "UX Strategy",
+    "Organization Design",
+    "Engineering",
+    "プロダクトマネジメント",
+    "組織デザイン"
+  ],
+  "location": {
+    "locality": "Tokyo",
+    "country": "JP"
+  },
+  "socials": {
+    "twitter": "https://twitter.com/yukagil",
+    "linkedin": "https://www.linkedin.com/in/yuta-kanehara/",
+    "facebook": "https://www.facebook.com/yuta.kanehara",
+    "youtrust": "https://youtrust.jp/users/yukagil",
+    "note": "https://note.com/yukagil",
+    "xArticles": "https://x.com/yukagil/articles",
+    "qabox": "https://note.com/qa/yukagil"
+  },
+  "contact": {
+    "formUrl": "https://yukagil.github.io/#contact",
+    "note": "お問い合わせはサイト内の Contact フォーム、または X / LinkedIn のダイレクトメッセージから受け付けています。相談内容が固まっていない段階でも歓迎します。",
+    "responseTime": "3営業日以内",
+    "preferredChannels": [
+      { "label": "Contact フォーム", "url": "https://yukagil.github.io/#contact" },
+      { "label": "X (Twitter) DM", "url": "https://twitter.com/yukagil" },
+      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/yuta-kanehara/" },
+      { "label": "YOUTRUST", "url": "https://youtrust.jp/users/yukagil" }
+    ]
+  },
+  "experiences": [
+    {
+      "company": "Muture",
+      "description": "プロダクト開発と組織変革を両立し、持続可能な変革を支援するDXパートナー",
+      "role": "執行役員 CPO",
+      "period": "2023 - now",
+      "startYear": "2023",
+      "endYear": null,
+      "isCurrent": true,
+      "website": "https://muture.jp/"
+    },
+    {
+      "company": "marui unite",
+      "description": "丸井グループのデジタルプロダクト開発を行うテックカンパニー",
+      "role": "取締役 CPO",
+      "period": "2024 - now",
+      "startYear": "2024",
+      "endYear": null,
+      "isCurrent": true,
+      "website": "https://marui-unite.co.jp/"
+    },
+    {
+      "company": "Showcase Gig",
+      "description": "モバイルオーダープラットフォーム「O:der」を提供。次世代店舗体験を創出",
+      "role": "VP of Product",
+      "period": "2020 - 2023",
+      "startYear": "2020",
+      "endYear": "2023",
+      "isCurrent": false,
+      "website": "https://www.showcase-gig.com/"
+    },
+    {
+      "company": "DeNA",
+      "description": "ゲーム、スポーツ、ヘルスケアなど多角的に事業を展開するIT企業",
+      "role": "Engineer → PM",
+      "period": "2016 - 2020",
+      "startYear": "2016",
+      "endYear": "2020",
+      "isCurrent": false,
+      "website": "https://dena.com/"
+    }
+  ],
+  "services": [
+    {
+      "name": "外部顧問・アドバイザリー",
+      "detail": "組織変革・リーダー育成・チームトレーニング等の伴走支援",
+      "links": [
+        { "label": "Muture", "href": "https://muture.jp/" },
+        { "label": "Product People", "href": "https://productpeople.jp/" }
+      ]
+    },
+    {
+      "name": "プロダクトコーチング(単発)",
+      "detail": "目安: 5,000円程度 / 1時間オンラインMTG",
+      "price": { "amount": 5000, "currency": "JPY", "unit": "1時間", "approximate": true },
+      "links": [
+        { "label": "Granty PM", "href": "https://pm-notes.com/pm_37/" }
+      ]
+    },
+    {
+      "name": "プロダクトコーチング(定期)",
+      "detail": "目安: パーソナルジム程度 / 月2〜4回のMTG＋非同期サポート",
+      "formNote": true
+    }
+  ]
+}

@@ -18,9 +18,11 @@ import {
 
 import staticSpeakings from './data/speakings.json';
 import staticInterviews from './data/interviews.json';
+import staticProfile from './data/profile.json';
 import qabox from './data/qabox.json';
 
 declare const __BUILD_DATE__: string;
+declare const __BUILD_YEAR__: number;
 const LAST_UPDATED = __BUILD_DATE__;
 
 // --- Types ---
@@ -45,15 +47,6 @@ interface Interview {
   date: string;
   media: string;
   title: string;
-  link: string;
-  imageUrl?: string;
-}
-
-interface Writing {
-  id: string;
-  title: string;
-  source: string;
-  date: string;
   link: string;
   imageUrl?: string;
 }
@@ -87,32 +80,6 @@ function useSectionInView() {
 }
 
 
-// --- Data ---
-const profile = {
-  name: "Yuta Kanehara",
-  tagline: "良い組織が、良いプロダクトをつくる",
-  positions: [
-    "Muture 執行役員 CPO",
-    "marui unite 取締役 CPO",
-  ],
-  handle: "@yukagil",
-  imageUrl: "https://storage.googleapis.com/studio-cms-assets/projects/Z9qp7nJGOP/s-1120x1120_v-fs_webp_2a3f9622-e54d-4f8b-8670-510ba156906d_small.webp",
-  about: "プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。個の馬力ではなく、組織で課題を解決するアプローチを大切にしています。",
-  socials: {
-    twitter: "https://twitter.com/yukagil",
-    linkedin: "https://www.linkedin.com/in/yuta-kanehara/",
-    facebook: "https://www.facebook.com/yuta.kanehara",
-    youtrust: "https://youtrust.jp/users/yukagil",
-  },
-};
-
-const experiences: Experience[] = [
-  { company: "Muture", description: "プロダクト開発と組織変革を両立し、持続可能な変革を支援するDXパートナー", role: "執行役員 CPO", period: "2023 - now", isCurrent: true, website: "https://muture.jp/" },
-  { company: "marui unite", description: "丸井グループのデジタルプロダクト開発を行うテックカンパニー", role: "取締役 CPO", period: "2024 - now", isCurrent: true, website: "https://marui-unite.co.jp/" },
-  { company: "Showcase Gig", description: "モバイルオーダープラットフォーム「O:der」を提供。次世代店舗体験を創出", role: "VP of Product", period: "2020 - 2023", isCurrent: false, website: "https://www.showcase-gig.com/" },
-  { company: "DeNA", description: "ゲーム、スポーツ、ヘルスケアなど多角的に事業を展開するIT企業", role: "Engineer → PM", period: "2016 - 2020", isCurrent: false, website: "https://dena.com/" },
-];
-
 interface ServiceItem {
   name: string;
   detail: string;
@@ -120,28 +87,27 @@ interface ServiceItem {
   formNote?: boolean;
 }
 
-const services: ServiceItem[] = [
-  {
-    name: '外部顧問・アドバイザリー',
-    detail: '組織変革・リーダー育成・チームトレーニング等の伴走支援',
-    links: [
-      { label: 'Muture', href: 'https://muture.jp/' },
-      { label: 'Product People', href: 'https://productpeople.jp/' },
-    ],
-  },
-  {
-    name: 'プロダクトコーチング(単発)',
-    detail: '目安: 5,000円程度 / 1時間オンラインMTG',
-    links: [
-      { label: 'Granty PM', href: 'https://pm-notes.com/pm_37/' },
-    ],
-  },
-  {
-    name: 'プロダクトコーチング(定期)',
-    detail: '目安: パーソナルジム程度 / 月2〜4回のMTG＋非同期サポート',
-    formNote: true,
-  },
-];
+// --- Data ---
+// 表示・構造化データ(SEO.tsx)・llms.txt 生成(scripts/gen-agent-assets.js) が
+// 同じ src/data/profile.json を参照する
+const profile = staticProfile;
+const experiences = staticProfile.experiences as Experience[];
+const services = staticProfile.services as ServiceItem[];
+
+// "2026.04.12" -> "2026-04-12"（<time datetime> 用）
+function toIsoDate(date: string): string | undefined {
+  const m = date?.match(/^(\d{4})\.(\d{1,2})\.(\d{1,2})$/);
+  return m ? `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}` : undefined;
+}
+
+function DateText({ date, className }: { date: string; className?: string }) {
+  const iso = toIsoDate(date);
+  return (
+    <time dateTime={iso} className={className} style={{ color: 'var(--color-text-muted)' }}>
+      {date}
+    </time>
+  );
+}
 
 function calculateAge() {
   const birth = new Date(1993, 9, 12); // 1993/10/12 (month is 0-indexed)
@@ -378,9 +344,9 @@ export default function Home() {
 
         {/* Experience */}
         <Section title="Experience">
-          <div className="flex flex-col gap-4">
+          <ol className="flex flex-col gap-4 list-none">
             {experiences.map((exp, i) => (
-              <div key={i} className="flex gap-3">
+              <li key={i} className="flex gap-3">
                 <div className="flex flex-col items-center pt-1.5">
                   <div
                     className="w-2 h-2 rounded-full flex-shrink-0"
@@ -417,29 +383,31 @@ export default function Home() {
                     {exp.description}
                   </p>
                 </div>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </Section>
 
         {/* Interviews — first one gets a photo (personality shows through), rest are text rows */}
+        {/* 全件を DOM に出し、4件目以降は CSS で隠す。クローラ／エージェントには全件届く */}
         <Section title="Interviews">
-          <div className="flex flex-col gap-2">
-            {(showAllInterviews ? interviews : interviews.slice(0, 3)).map((item, i) =>
-              i === 0 ? (
-                <FeaturedCard
-                  key={item.id}
-                  link={item.link}
-                  imageUrl={item.imageUrl}
-                  label={item.media}
-                  title={item.title}
-                  date={item.date}
-                />
-              ) : (
-                <InterviewRow key={item.id} item={item} />
-              )
-            )}
-          </div>
+          <ul className="flex flex-col gap-2 list-none">
+            {interviews.map((item, i) => (
+              <li key={item.id} hidden={i >= 3 && !showAllInterviews}>
+                {i === 0 ? (
+                  <FeaturedCard
+                    link={item.link}
+                    imageUrl={item.imageUrl}
+                    label={item.media}
+                    title={item.title}
+                    date={item.date}
+                  />
+                ) : (
+                  <InterviewRow item={item} />
+                )}
+              </li>
+            ))}
+          </ul>
           {interviews.length > 3 && (
             <MoreButton
               expanded={showAllInterviews}
@@ -450,11 +418,13 @@ export default function Home() {
 
         {/* Speaking */}
         <Section title="Speaking">
-          <div className="flex flex-col gap-0">
-            {(showAllSpeakings ? speakings : speakings.slice(0, 3)).map((item) => (
-              <SpeakingRow key={item.id} item={item} />
+          <ul className="flex flex-col gap-0 list-none">
+            {speakings.map((item, i) => (
+              <li key={item.id} hidden={i >= 3 && !showAllSpeakings}>
+                <SpeakingRow item={item} />
+              </li>
             ))}
-          </div>
+          </ul>
           {speakings.length > 3 && (
             <MoreButton
               expanded={showAllSpeakings}
@@ -496,11 +466,9 @@ export default function Home() {
           <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--color-text-secondary)' }}>
             これまでの経験をもとに、プロダクトマネジメントや組織づくりの支援もしています。
           </p>
-          <div className="space-y-4">
+          <ul className="space-y-4 list-none">
             {services.map((s, i) => (
-              <div
-                key={i}
-              >
+              <li key={i}>
                 <p className="text-sm font-medium mb-1">{s.name}</p>
                 <p className="text-xs mb-2" style={{ color: 'var(--color-text-secondary)' }}>
                   {s.detail}
@@ -535,9 +503,9 @@ export default function Home() {
                     Contact →
                   </a>
                 )}
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
         </Section>
 
         {/* Contact */}
@@ -560,6 +528,31 @@ export default function Home() {
           </ul>
 
           <ContactForm />
+
+          {/* フォーム以外の導線も明示しておく（エージェントが連絡手段を提示できるように） */}
+          <div className="mt-8 pt-6" style={{ borderTop: '1px solid var(--color-border)' }}>
+            <p className="text-xs mb-3" style={{ color: 'var(--color-text-muted)' }}>
+              フォーム以外でも、SNS のダイレクトメッセージから連絡いただけます。
+            </p>
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 list-none">
+              {profile.contact.preferredChannels
+                .filter((c) => !c.url.startsWith(profile.url))
+                .map((c) => (
+                  <li key={c.url}>
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer me"
+                      className="inline-flex items-center gap-1 text-xs font-bold link-accent"
+                      style={{ color: 'var(--color-accent)' }}
+                    >
+                      {c.label}
+                      <ExternalLink size={10} />
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </div>
         </Section>
 
         {/* Footer */}
@@ -568,7 +561,7 @@ export default function Home() {
           style={{ borderColor: 'var(--color-border)' }}
         >
           <p className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
-            &copy; {new Date().getFullYear()} Yuta Kanehara
+            &copy; {__BUILD_YEAR__} {profile.name}
           </p>
           <p className="font-mono text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
             Last updated: {LAST_UPDATED}
@@ -748,9 +741,7 @@ function FeaturedCard({ link, imageUrl, label, title, date }: {
       >
         <div className="flex items-center justify-between gap-3 mb-1">
           <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
-          <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--color-text-muted)' }}>
-            {date}
-          </span>
+          <DateText date={date} className="font-mono text-xs flex-shrink-0" />
         </div>
         <div className="text-sm font-medium leading-snug transition-colors link-accent">{title}</div>
       </div>
@@ -770,9 +761,7 @@ function InterviewRow({ item }: { item: Interview }) {
         <div className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{item.media}</div>
         <div className="text-sm font-medium line-clamp-2">{item.title}</div>
       </div>
-      <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--color-text-muted)' }}>
-        {item.date}
-      </span>
+      <DateText date={item.date} className="font-mono text-xs flex-shrink-0" />
     </a>
   );
 }
@@ -847,9 +836,7 @@ function SpeakingRow({ item }: { item: Speaking }) {
             <span className="text-sm font-medium line-clamp-2">{item.title}</span>
           )}
         </div>
-        <span className="font-mono text-xs flex-shrink-0" style={{ color: 'var(--color-text-muted)' }}>
-          {item.date}
-        </span>
+        <DateText date={item.date} className="font-mono text-xs flex-shrink-0" />
       </div>
       {item.relatedLinks && item.relatedLinks.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-1">

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Shape = 'circle' | 'rect' | 'u';
 
@@ -122,6 +122,18 @@ function drawParticle(ctx: CanvasRenderingContext2D, p: Particle) {
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // prefers-reduced-motion はレンダリング中に参照しない。
+  // サーバー側では常に false になるため、直接参照するとハイドレーションが
+  // 不整合を起こす（SSR は canvas を出し、クライアント初回は null になる）
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduceMotion(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -134,7 +146,7 @@ export default function ParticleBackground() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let animId: number;
     let particles: Particle[] = [];
-    let bonds: Bond[] = [];
+    const bonds: Bond[] = [];
     const ripples: Ripple[] = [];
 
     function spawnRipple(x: number, y: number, color: string, scale = 1) {
@@ -494,7 +506,7 @@ export default function ParticleBackground() {
     };
   }, []);
 
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (reduceMotion) {
     return null;
   }
 

@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# scripts/gen-agent-assets.js がビルド時に生成する（src/data/profile.json が正）
+public/llms.txt
+public/sitemap.xml
+public/data/
+
 # Environment variables (API keys)
 .env
 .env.local
