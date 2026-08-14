@@ -1,0 +1,105 @@
+# Yuta Kanehara
+
+> プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。10年以上のプロダクトづくりの経験をベースに、人・組織・事業・経営それぞれのレイヤーにおける、理論と実践の両方に基づいた再現性のある現実的なアプローチを大切にしています。
+
+良い組織が、良いプロダクトをつくる。現在は Muture 執行役員 CPO / marui unite 取締役 CPO を務めています。
+
+## Profile
+
+- 名前: Yuta Kanehara (@yukagil)
+- 肩書き: Muture 執行役員 CPO / marui unite 取締役 CPO
+- 拠点: Tokyo, JP
+- 専門領域: Product Management, UX Strategy, Organization Design, Engineering, プロダクトマネジメント, 組織デザイン
+- サイト: https://yukagil.github.io
+
+プロダクトマネジメントを軸に、戦略から実装までをアラインメントすることで、チームと共に価値あるプロダクトを届けます。個の馬力ではなく、組織で課題を解決するアプローチを大切にしています。
+
+## Experience
+
+- **Muture** — 執行役員 CPO (2023 - now) <https://muture.jp/>
+  - プロダクト開発と組織変革を両立し、持続可能な変革を支援するDXパートナー
+- **marui unite** — 取締役 CPO (2024 - now) <https://marui-unite.co.jp/>
+  - 丸井グループのデジタルプロダクト開発を行うテックカンパニー
+- **Showcase Gig** — VP of Product (2020 - 2023) <https://www.showcase-gig.com/>
+  - モバイルオーダープラットフォーム「O:der」を提供。次世代店舗体験を創出
+- **DeNA** — Engineer → PM (2016 - 2020) <https://dena.com/>
+  - ゲーム、スポーツ、ヘルスケアなど多角的に事業を展開するIT企業
+
+## Services
+
+これまでの経験をもとに、プロダクトマネジメントや組織づくりの支援もしています。
+
+- **外部顧問・アドバイザリー** — 組織変革・リーダー育成・チームトレーニング等の伴走支援
+  - Muture: https://muture.jp/
+  - Product People: https://productpeople.jp/
+- **プロダクトコーチング(単発)** — 目安: 5,000円程度 / 1時間オンラインMTG
+  - Granty PM: https://pm-notes.com/pm_37/
+- **プロダクトコーチング(定期)** — 目安: パーソナルジム程度 / 月2〜4回のMTG＋非同期サポート
+  - 問い合わせ: https://yukagil.github.io/#contact
+
+## Writings
+
+note と X で、プロダクトマネジメントや組織の話を中心に書いています。全件は https://yukagil.github.io/data/writings.json を参照してください。
+
+- [取引費用の経済学で考える内製と外注](https://note.com/yukagil/n/n8fe64da9afd0) — note, 2026.04.12
+- [社内政治と交渉](https://note.com/yukagil/n/n141ea8b7a2b1) — note, 2025.12.14
+- [VHSBモデルで読み解くプロダクトマネジメントとダイナミクス](https://note.com/yukagil/n/nf509ee161521) — note, 2025.12.13
+- [小さな革命、広がる変革](https://note.com/yukagil/n/nc94bab9d9c37) — note, 2025.12.01
+- [トランスフォーメーションのストーリー: 丸井グループ](https://note.com/yukagil/n/nca35f785935a) — note, 2024.12.12
+- [プロダクトマネージャーがRSGTに初参戦してみたら、とっても楽しかったという話](https://note.com/yukagil/n/n11eda853da12) — note, 2024.01.14
+- [削ってよかった暮らしのモノ 2023](https://note.com/yukagil/n/n090040c502a1) — note, 2023.12.31
+- ["問題"とか"課題"とか"アイデア"とか"インサイト"とかややこしいので関係性を整理したい](https://note.com/yukagil/n/n37ea8f3599f2) — note, 2023.12.13
+- [あえて非IT系の大企業でデュアルトラックアジャイルを採用した理由とその現在地](https://note.com/yukagil/n/n02e86235fca3) — note, 2023.12.12
+- [ChatGPTではじめる、実践OOUI](https://note.com/yukagil/n/n84a4aad23802) — note, 2023.05.01
+- [JIRA Product Discovery触ってみたメモ](https://note.com/yukagil/n/nd7c111ac9ddf) — note, 2023.02.10
+- [VDSLマンションで回線速度を4.6xした話](https://note.com/yukagil/n/n0ed03a76254e) — note, 2023.01.25
+- [死なないための、プロダクトマネジメント](https://note.com/yukagil/n/n85f1032f4966) — note, 2022.12.17
+- [要求管理と優先度づけの世界](https://note.com/yukagil/n/n496c32c71301) — note, 2022.12.07
+- [その要求に至る意思決定を伝えるために、PRDR(=Product Requirements Decision Records)をはじめた](https://note.com/yukagil/n/n367dc714eb70) — note, 2022.05.11
+- [プロダクトマネージャーはWhy, Whatの責任を持つが、Howはどうだろう](https://note.com/yukagil/n/n1bc31227d6ff) — note, 2022.04.07
+- [BtoBtoC SaaSで三方良しを叶えるための勘所](https://note.com/yukagil/n/n1020b9e2cd90) — note, 2021.12.12
+- [NEWSというテーマからインタビューアプリというアイデアが生まれるまで[SPAJAM2019東京A予選]](https://note.com/yukagil/n/n833628575cb6) — note, 2019.05.23
+
+## Speaking
+
+登壇実績。全件は https://yukagil.github.io/data/speakings.json を参照してください。
+
+- [会社タイプ別でわかる 社内コミュニケーション講座](https://youtrust.jp/lp/youtrust_campus_officepolitics_archive) — YOUTRUST, 2026.02.26 ([Slides](https://speakerdeck.com/muture/she-nei-zheng-zhi-tojiao-she), [Report](https://youtrust.jp/lp/youtrust_campus_officepolitics_archive))
+- [大企業のUX組織が見据える未来](https://www.uxia.or.jp/news/detail_251017_02) — UX組織成功戦略会議2025, 2025.11.25 ([Report](https://www.uxia.or.jp/news/detail_251017_02))
+- [AI時代、変化する役割。3つの視点から未来を描く](https://note.com/muture/n/n613e79a6ab41) — プロダクトヒストリーカンファレンス2025, 2025.09.19 ([Slides](https://speakerdeck.com/muture/product-history-conference-2025-hurotakutomanesimentobian), [Report](https://note.com/muture/n/n613e79a6ab41))
+- [プロダクト組織の成長をどのようにして測るのか](#) — Webinar, 2025.06.18 ([Slides](https://speakerdeck.com/muture/uebinazi-liao-hurotakutozu-zhi-nocheng-chang-woding-liang-teke-shi-hua-suruniha))
+- [部分最適を超えて、全体を動かす〜大企業組織変革のためのプロダクトコーチング〜](https://productzine.jp/article/detail/3484) — ProductZine Day 2025, 2025.05.15 ([Slides](https://speakerdeck.com/muture/productzine-day-2025-bu-fen-zui-shi-wochao-ete-quan-ti-wodong-kasu-da-qi-ye-zu-zhi-bian-ge-notamenopurodakutokotingu), [Report](https://productzine.jp/article/detail/3484))
+- [組織と人をどう育てるか 〜プロダクトマネジメントエコシステムを紐解く〜](https://note.com/muture/n/na55bffc5747d) — PdM Days 2025, 2025.02.26 ([Slides](https://speakerdeck.com/muture/pdm-days-zu-zhi-toren-wodouyu-teruka-purodakutomanezimentoekosisutemuwoniu-jie-ku), [Report](https://note.com/muture/n/na55bffc5747d))
+- [エンタープライズアジャイルとプロダクトマネジメント](#) — エンタープライズアジャイル勉強会, 2024.05.29 ([Slides](https://speakerdeck.com/muture/entapuraizuaziyairumian-qiang-hui-ver-wan-jing-gurupugaqu-rizu-muentapuraizuaziyairuto-purodakutomaneziyanoyi-ge))
+- [丸井グループが取り組むエンタープライズアジャイルとプロダクトマネージャーの役割](https://note.com/muture/n/ned8709cc80a3) — PdM Night, 2024.04.17 ([Slides](https://speakerdeck.com/muture/wan-jing-gurupugaqu-rizu-muentapuraizuaziyairuto-purodakutomaneziyanoyi-ge), [Report](https://note.com/muture/n/ned8709cc80a3))
+- [大企業の中にプロダクトチームをつくる仕事](https://note.com/muture/n/naae57381dbb9) — PdM Days 2024, 2024.02.17 ([Slides](https://speakerdeck.com/muture/da-qi-ye-nozhong-ni-purodakutotimuwotukurushi-shi), [Report](https://note.com/muture/n/naae57381dbb9))
+- [「お客様との対話」を加速する、エンタープライズアジャイルことはじめ](https://note.com/muture/n/n8b74e334f600) — MIDAS TECH STUDY, 2023.06.26 ([Slides](https://speakerdeck.com/muture/oke-samatonodui-hua-wojia-su-suru-entapuraizuaziyairukotohazime), [Report](https://note.com/muture/n/n8b74e334f600))
+
+## Interviews
+
+取材・インタビュー記事。全件は https://yukagil.github.io/data/interviews.json を参照してください。
+
+- [安く、早く、で終わらせない。丸井グループのDXが向き合う内製化の“本質”とは](https://studio.design/ja/interview/maruigroup) — Studio Blog, 2025.10.30
+- [マルイユナイト 設立までの変遷とこれから](https://note.com/marui_unite/n/n6a25929bc4d1) — marui unite note, 2024.10.25
+- [Product OpsとProduct Coachを担うPMから学ぶ！エンタープライズ企業を変革するヒント](https://pm-notes.com/pdm-voice-48/) — Granty PM, 2024.05.15
+
+## Links
+
+- twitter: https://twitter.com/yukagil
+- linkedin: https://www.linkedin.com/in/yuta-kanehara/
+- facebook: https://www.facebook.com/yuta.kanehara
+- youtrust: https://youtrust.jp/users/yukagil
+- note: https://note.com/yukagil
+- xArticles: https://x.com/yukagil/articles
+- qabox: https://note.com/qa/yukagil
+
+## Contact
+
+お問い合わせはサイト内の Contact フォーム、または X / LinkedIn のダイレクトメッセージから受け付けています。相談内容が固まっていない段階でも歓迎します。
+
+- Contact フォーム: https://yukagil.github.io/#contact
+- X (Twitter) DM: https://twitter.com/yukagil
+- LinkedIn: https://www.linkedin.com/in/yuta-kanehara/
+- YOUTRUST: https://youtrust.jp/users/yukagil
+
+返信の目安: 3営業日以内
