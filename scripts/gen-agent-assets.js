@@ -93,7 +93,7 @@ function buildLlmsTxt() {
     if (s.links) {
       for (const l of s.links) L.push(`  - ${l.label}: ${l.href}`);
     }
-    if (s.formNote) L.push(`  - 問い合わせ: ${profile.contact.formUrl}`);
+    if (!s.links) L.push(`  - 問い合わせ: ${profile.contact.formUrl}`);
   }
   L.push('');
 

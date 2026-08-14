@@ -12,7 +12,9 @@
   --color-surface: #F0EFED;
   --color-text: #2C2A25;
   --color-text-secondary: #5C5A50;
-  --color-text-muted: #7A7870;
+  /* #7A7870 だと bg 上 4.20 / surface 上 3.85 で WCAG AA (4.5) に届かず、
+     12px のメタ情報で多用しているため見えづらかった。5.00 / 4.58 に引き上げ */
+  --color-text-muted: #6E6C64;
   --color-accent: #D03530;
   --color-accent-hover: #D03530;
   --color-border: #D8D6D0;
@@ -232,25 +234,6 @@ body {
   animation: dqSlideUp 0.5s var(--ease-bounce) 0.4s both;
 }
 
-/* ===== Hanko (判子) stamp ===== */
-.hanko {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: 2px solid var(--color-accent);
-  border-radius: 4px;
-  color: var(--color-accent);
-  font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
-  transform: rotate(-6deg);
-  opacity: 0.85;
-  flex-shrink: 0;
-}
-
 /* ===== Flip hint animation ===== */
 @keyframes flipHint {
   0%   { opacity: 0; transform: translateY(4px); }
@@ -270,4 +253,102 @@ body {
    打ち消されないよう明示する */
 [hidden] {
   display: none !important;
+}
+
+/* ============================================================
+   Design variants — 探索用。DesignLab.tsx が <html data-variant>
+   を切り替える。DOM は変わらないので、プリレンダリング出力と
+   エージェント向けの内容は base のまま影響を受けない。
+   採用が決まったら勝った案を通常のスタイルへ昇格させ、
+   このブロックごと削除する。
+   ============================================================ */
+
+/* ---- Menu: Zone 2 を「選べるもの」として並べる ---------------- */
+/* 見出しをメニューのカテゴリ行にする。赤い縦棒をやめ、
+   カーソル記号 + 右へ伸びる罫線で「区切り」を示す */
+[data-variant='menu'] main section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: none;
+  padding-left: 0;
+}
+[data-variant='menu'] main section > h2::before {
+  content: '▸';
+  color: var(--color-accent);
+  font-size: 0.8em;
+}
+[data-variant='menu'] main section > h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* 行を「枠」に。境界を引き、選択時に少し右へ送る */
+[data-variant='menu'] main .game-select {
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  transition: transform var(--duration-fast) var(--ease-smooth),
+              background-color var(--duration-fast) ease;
+}
+[data-variant='menu'] main .game-select:hover,
+[data-variant='menu'] main .game-select:focus-within {
+  transform: translateX(4px);
+}
+/* カーソルを常時うっすら見せ、選択時にはっきりさせる */
+[data-variant='menu'] main .game-select::before {
+  transform: translateY(-50%) scale(0.5);
+  opacity: 0.25;
+}
+[data-variant='menu'] main .game-select:hover::before,
+[data-variant='menu'] main .game-select:focus-within::before {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+}
+
+/* ---- Console: カード裏のステータス画面の語彙を本文へ ---------- */
+/* 見出しを等幅にし、破線で全幅に区切る */
+[data-variant='console'] main section > h2 {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border-left: none;
+  padding-left: 0;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--color-border);
+  color: var(--color-text-muted);
+}
+[data-variant='console'] main section > h2::before {
+  content: '// ';
+  color: var(--color-accent);
+}
+
+/* 行間を詰め、区切りを破線に。面ではなく線で構造を出す */
+[data-variant='console'] main .game-select {
+  border-bottom: 1px dashed var(--color-border);
+  border-radius: 0;
+}
+[data-variant='console'] main .game-select:hover {
+  background-color: var(--color-surface);
+}
+[data-variant='console'] main .game-select::before {
+  display: none;
+}
+/* 経歴の期間・実績の日付など、等幅の数字を主役に引き上げる */
+[data-variant='console'] main time,
+[data-variant='console'] main .font-mono {
+  color: var(--color-text);
+}
+
+/* ---- HUD: 本文は base のまま。常駐バーぶんだけ上に余白 -------- */
+[data-variant='hud'] main {
+  padding-top: 8px;
+}
+
+/* 探索中はアニメーションの再生を待たずに中身を見たい */
+[data-variant='menu'] .animate-section,
+[data-variant='console'] .animate-section,
+[data-variant='hud'] .animate-section {
+  opacity: 1;
+  transform: none;
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import QRCode from 'qrcode';
 import SEO from './components/SEO';
 import ParticleBackground from './components/ParticleBackground';
+import DesignLab from './components/DesignLab';
 import {
   ExternalLink,
   Linkedin,
@@ -87,7 +88,6 @@ interface ServiceItem {
   name: string;
   detail: string;
   links?: { label: string; href: string }[];
-  formNote?: boolean;
 }
 
 // --- Data ---
@@ -472,43 +472,49 @@ export default function Home() {
           <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--color-text-secondary)' }}>
             これまでの経験をもとに、プロダクトマネジメントや組織づくりの支援もしています。
           </p>
-          <ul className="space-y-4 list-none">
+          {/* 3項目を1枚の面にまとめ、境界は破線で示す。
+              サイズではなく余白と面で階層をつくる */}
+          <ul className="list-none">
             {services.map((s, i) => (
-              <li key={i}>
-                <p className="text-sm font-medium mb-1">{s.name}</p>
-                <p className="text-xs mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+              <li
+                key={i}
+                className={i > 0 ? 'pt-4 mt-4' : undefined}
+                style={i > 0 ? { borderTop: '1px dashed var(--color-border)' } : undefined}
+              >
+                <p className="text-sm font-bold mb-1">{s.name}</p>
+                <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
                   {s.detail}
                 </p>
-                {s.links && (
-                  <div className="flex flex-wrap gap-3">
-                    {s.links.map((l, j) => (
-                      <a
-                        key={j}
-                        href={l.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-bold link-accent"
-                        style={{ color: 'var(--color-accent)' }}
-                      >
-                        {l.label}
-                        <ExternalLink size={10} />
-                      </a>
-                    ))}
-                  </div>
-                )}
-                {s.formNote && (
-                  <a
-                    href="#contact"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                    className="inline-flex items-center gap-1 text-xs font-bold"
-                    style={{ color: 'var(--color-accent)' }}
-                  >
-                    Contact →
-                  </a>
-                )}
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
+                  {s.links?.map((l, j) => (
+                    <a
+                      key={j}
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-bold link-accent"
+                      style={{ color: 'var(--color-accent)' }}
+                    >
+                      {l.label}
+                      <ExternalLink size={10} className="opacity-60" />
+                    </a>
+                  ))}
+                  {/* 外部の受け皿がない項目だけ、問い合わせへ送る */}
+                  {!s.links && (
+                    <a
+                      href="#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                      className="inline-flex items-center gap-1 text-xs font-bold link-accent"
+                      style={{ color: 'var(--color-accent)' }}
+                    >
+                      相談する
+                      <span aria-hidden="true" className="opacity-60">→</span>
+                    </a>
+                  )}
+                </div>
               </li>
             ))}
           </ul>
@@ -553,7 +559,7 @@ export default function Home() {
                       style={{ color: 'var(--color-accent)' }}
                     >
                       {c.label}
-                      <ExternalLink size={10} />
+                      <ExternalLink size={10} className="opacity-60" />
                     </a>
                   </li>
                 ))}
@@ -574,6 +580,9 @@ export default function Home() {
           </p>
         </footer>
       </main>
+
+      {/* デザイン探索用。?lab で出現。不要になったらこの行と import を消す */}
+      <DesignLab />
 
       {/* QR Code Modal */}
       {showQr && <QrModal profile={profile} onClose={() => setShowQr(false)} />}
@@ -685,8 +694,8 @@ function Section({ id, title, children }: { id?: string; title?: string; childre
     >
       {title && (
         <h2
-          className="font-display text-sm font-bold tracking-widest uppercase mb-4 border-l-2 pl-3"
-          style={{ color: 'var(--color-text-secondary)', borderColor: 'var(--color-accent)' }}
+          className="font-display text-lg font-bold tracking-widest uppercase mb-5 border-l-2 pl-3"
+          style={{ color: 'var(--color-text)', borderColor: 'var(--color-accent)' }}
         >
           {title}
         </h2>
@@ -1090,7 +1099,7 @@ function ContactForm() {
             id="field-name"
             name="entry.356289134"
             required
-            className="w-full px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2"
+            className="w-full px-4 py-3 rounded-lg text-base focus:outline-none focus:ring-2"
             style={{ ...inputStyle, '--tw-ring-color': 'var(--color-accent)' } as React.CSSProperties}
             placeholder="例: 山田 太郎"
           />
@@ -1107,7 +1116,7 @@ function ContactForm() {
             type="text"
             id="field-company"
             name="entry.1060507538"
-            className="w-full px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2"
+            className="w-full px-4 py-3 rounded-lg text-base focus:outline-none focus:ring-2"
             style={{ ...inputStyle, '--tw-ring-color': 'var(--color-accent)' } as React.CSSProperties}
             placeholder="例: 株式会社○○"
           />
@@ -1125,7 +1134,7 @@ function ContactForm() {
             id="field-contact"
             name="entry.1020997844"
             required
-            className="w-full px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2"
+            className="w-full px-4 py-3 rounded-lg text-base focus:outline-none focus:ring-2"
             style={{ ...inputStyle, '--tw-ring-color': 'var(--color-accent)' } as React.CSSProperties}
             placeholder="例: name@example.com"
           />
@@ -1140,7 +1149,7 @@ function ContactForm() {
             name="entry.243889220"
             required
             rows={6}
-            className="w-full px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 resize-none"
+            className="w-full px-4 py-3 rounded-lg text-base focus:outline-none focus:ring-2 resize-none"
             style={{ ...inputStyle, '--tw-ring-color': 'var(--color-accent)' } as React.CSSProperties}
             placeholder="どんなことに困っているか、現状や背景など、思っていることをそのまま書いていただいてOKです。"
           />

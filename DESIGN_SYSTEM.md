@@ -78,7 +78,7 @@ Key Nintendo qualities to embody:
 ## 3. Color Palette
 
 ### Design Principle
-Like a Nintendo product page: predominantly neutral with ONE signature color that does the talking. The accent color is "Yuta Red" — a warm, slightly orange-red that feels energetic and Japanese (think: Nintendo red, torii gate red, hanko stamp red). It appears sparingly: the visual signature stamp, active states, the most important CTA.
+Like a Nintendo product page: predominantly neutral with ONE signature color that does the talking. The accent color is "Yuta Red" — a warm, slightly orange-red that feels energetic and Japanese (think: Nintendo red, torii gate red). It appears sparingly: links, active states, the most important CTA.
 
 ### Light Mode
 
@@ -150,7 +150,7 @@ Like a Nintendo product page: predominantly neutral with ONE signature color tha
 
 ### Color Usage Rules
 1. **Backgrounds**: `--color-bg` everywhere. `--color-surface` for cards/elevated content only.
-2. **Accent red**: Max 3 instances visible on any screen at once. Used for: the hanko stamp, primary CTA button, active/selected states. Never as background fill for large areas.
+2. **Accent red**: the one signal that something is interactive. Used for: links, primary CTA button, active/selected states. Never as background fill for large areas.
 3. **No colored section backgrounds**. Sections differentiate through spacing, not color.
 4. **Borders**: 1px, `--color-border`. No thick borders. Border appears on hover or to define cards, never both simultaneously.
 5. **No box-shadow offsets**. Shadows are soft and ambient only.
@@ -421,32 +421,6 @@ Footer: text-xs, mono, --color-text-tertiary, top border 1px --color-border
 
 ---
 
-## 7. The "One Thing Someone Will Remember"
-
-### The Hanko Stamp (判子)
-
-Yuta's visual signature is a small **hanko-style stamp** — a circular red seal rendered in the style of a Japanese personal stamp. It contains a simplified version of the kanji 「金」(from 金原/Kanehara) in white, set inside a circle with `--color-accent` (#E8433E) background.
-
-**Specifications:**
-- Size: 32px diameter (Zone 1), 24px diameter (footer)
-- Shape: perfect circle with a very subtle rough/textured edge (achieved with a slight SVG filter or a hand-drawn SVG path, not a programmatic circle — this matters)
-- Interior: the kanji 「金」in white, slightly irregular as if actually stamped
-- Rotation: tilted 3-7 degrees (not perfectly straight — stamps are never perfectly straight)
-- Placement in Zone 1: next to the name, slightly overlapping the text baseline like a real hanko stamp on a document
-- Placement in footer: next to copyright text
-
-**Why this works:**
-- It is unmistakably Japanese and unmistakably personal (hanko stamps are your identity)
-- It is small, quiet, and easy to miss at first — then once you see it, you can't unsee it
-- It is the ONE use of red that anchors the entire color system
-- It connects to the "card" metaphor (business cards in Japan carry hanko stamps)
-- It follows the Nintendo principle: one playful detail in an otherwise minimal space
-- It is not generatable by AI — it requires a specific hand-drawn SVG, making it feel human and authored
-
-The stamp should be implemented as an inline SVG, not a font glyph or image, for crisp rendering at all sizes. The subtle imperfection in the edge and character is load-bearing — a perfect circle with a perfect character would lose the charm entirely.
-
----
-
 ## 8. Dark Mode Strategy
 
 ### Philosophy: Same Room, Lights Dimmed
@@ -465,7 +439,6 @@ The current site's dark mode feels like a different website (neon synthwave). Th
 | Shadows | subtle ambient | slightly deeper ambient | NO glows. NO colored shadows. |
 
 ### What Does NOT Change Between Modes
-- The hanko stamp red (always red, it is a stamp)
 - The typography weights and sizes
 - The spacing
 - The border-radius values
@@ -541,6 +514,5 @@ theme: {
 ### Performance
 - Zen Maru Gothic and Zen Kaku Gothic New are Google Fonts with good CJK subsetting via `&subset=japanese`
 - Use `font-display: swap` (already set by `display=swap` in Google Fonts URL)
-- The hanko SVG is inline, not a network request
 - Reduced animation complexity (no requestAnimationFrame loops for orbiting icons)
 - Narrower max-width (640px) means smaller layout reflows
