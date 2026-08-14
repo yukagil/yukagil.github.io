@@ -21,8 +21,16 @@
       "text": "Muture執行役員CPO、マルイユナイト取締役CPO。DeNAでエンジニアとしてキャリアをスタートし、スタートアップでOMOプラットフォームをVP of Productとしてリード。その後Mutureに参画し、マルイユナイトの設立に携わる。丸井グループのプロダクトと組織づくりを推進している。"
     },
     {
+      "label": "200文字程度",
+      "text": "DeNAでソフトウェアエンジニアとしてキャリアをスタートし、スマートフォンアプリの開発・プロダクトマネジメントを担当。その後スタートアップで、飲食・小売のOMOプラットフォームをVP of Productとしてリード。2023年にMuture入社。丸井グループのプロダクトマネジメント・組織戦略を支援し、マルイユナイトの設立に携わる。現在はMuture執行役員CPO、マルイユナイト取締役CPO。"
+    },
+    {
+      "label": "250文字程度",
+      "text": "DeNAでソフトウェアエンジニアとしてキャリアをスタートし、スマートフォンアプリやグローバルプラットフォームの開発・プロダクトマネジメントを担当。その後スタートアップで、飲食・小売の新しい店舗体験を実現するOMOプラットフォームをVP of Productとしてリード。2023年にMuture入社。丸井グループのプロダクトマネジメント・組織戦略を支援し、エポスアプリのリニューアルやマルイユナイトの設立に携わる。現在はMuture執行役員CPO、マルイユナイト取締役CPO。"
+    },
+    {
       "label": "300文字程度",
-      "text": "DeNAでソフトウェアエンジニアとしてキャリアをスタートし、スマートフォンアプリやグローバルプラットフォームの開発・プロダクトマネジメントを担当。その後スタートアップで、飲食・小売の新しい店舗体験を実現するOMOプラットフォームをVP of Productとしてリード。2023年にMuture入社。丸井グループのプロダクトマネジメント・組織戦略を支援し、ライフスタイルアプリのリニューアルやマルイユナイトの設立に携わる。現在はMuture執行役員CPO、マルイユナイト取締役CPOとして、小売・金融にデジタルを掛け合わせ、丸井グループの「好きを応援するビジネス」を推進している。"
+      "text": "DeNAでソフトウェアエンジニアとしてキャリアをスタートし、スマートフォンアプリやグローバルプラットフォームの開発・プロダクトマネジメントを担当。その後スタートアップで、飲食・小売の新しい店舗体験を実現するOMOプラットフォームをVP of Productとしてリード。2023年にMuture入社。丸井グループのプロダクトマネジメント・組織戦略を支援し、エポスアプリのリニューアルやマルイユナイトの設立に携わる。現在はMuture執行役員CPO、マルイユナイト取締役CPOとして、小売・金融にデジタルを掛け合わせ、丸井グループの「好きを応援するビジネス」を推進している。"
     }
   ],
   "knowsAbout": [
@@ -51,10 +59,22 @@
     "note": "お問い合わせはサイト内の Contact フォーム、または X / LinkedIn のダイレクトメッセージから受け付けています。相談内容が固まっていない段階でも歓迎します。",
     "responseTime": "3営業日以内",
     "preferredChannels": [
-      { "label": "Contact フォーム", "url": "https://yukagil.github.io/#contact" },
-      { "label": "X (Twitter) DM", "url": "https://twitter.com/yukagil" },
-      { "label": "LinkedIn", "url": "https://www.linkedin.com/in/yuta-kanehara/" },
-      { "label": "YOUTRUST", "url": "https://youtrust.jp/users/yukagil" }
+      {
+        "label": "Contact フォーム",
+        "url": "https://yukagil.github.io/#contact"
+      },
+      {
+        "label": "X (Twitter) DM",
+        "url": "https://twitter.com/yukagil"
+      },
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/yuta-kanehara/"
+      },
+      {
+        "label": "YOUTRUST",
+        "url": "https://youtrust.jp/users/yukagil"
+      }
     ]
   },
   "experiences": [
@@ -104,16 +124,30 @@
       "name": "外部顧問・アドバイザリー",
       "detail": "組織変革・リーダー育成・チームトレーニング等の伴走支援",
       "links": [
-        { "label": "Muture", "href": "https://muture.jp/" },
-        { "label": "Product People", "href": "https://productpeople.jp/" }
+        {
+          "label": "Muture",
+          "href": "https://muture.jp/"
+        },
+        {
+          "label": "Product People",
+          "href": "https://productpeople.jp/"
+        }
       ]
     },
     {
       "name": "プロダクトコーチング(単発)",
       "detail": "目安: 5,000円程度 / 1時間オンラインMTG",
-      "price": { "amount": 5000, "currency": "JPY", "unit": "1時間", "approximate": true },
+      "price": {
+        "amount": 5000,
+        "currency": "JPY",
+        "unit": "1時間",
+        "approximate": true
+      },
       "links": [
-        { "label": "Granty PM", "href": "https://granty.me/pm-soudan/pm_37" }
+        {
+          "label": "Granty PM",
+          "href": "https://granty.me/pm-soudan/pm_37"
+        }
       ]
     },
     {

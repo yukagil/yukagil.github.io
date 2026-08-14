@@ -4,6 +4,7 @@ import SEO from './components/SEO';
 import ParticleBackground from './components/ParticleBackground';
 import DesignLab from './components/DesignLab';
 import ScrollHud from './components/ScrollHud';
+import SectionRail from './components/SectionRail';
 import {
   ExternalLink,
   Linkedin,
@@ -125,6 +126,10 @@ function calculateAge() {
 const interviews = staticInterviews as Interview[];
 const speakings = staticSpeakings as Speaking[];
 
+// 登壇は10件・4年ぶんあるので年で絞れるようにする。
+// Interviews は3件しかなく、チップのほうが中身より多くなるので付けない
+const speakingYears = [...new Set(speakings.map((s) => s.date.slice(0, 4)))].sort().reverse();
+
 // ============================================================
 // Main Component
 // ============================================================
@@ -134,6 +139,7 @@ export default function Home() {
   const [showQr, setShowQr] = useState(false);
   const [showAllInterviews, setShowAllInterviews] = useState(false);
   const [showAllSpeakings, setShowAllSpeakings] = useState(false);
+  const [speakingYear, setSpeakingYear] = useState('all');
   const flashRef = useRef<HTMLDivElement>(null);
 
   // DQ encounter transition (flash on enter, simple fade on return)
@@ -162,6 +168,7 @@ export default function Home() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
       <SEO />
       <ScrollHud />
+      <SectionRail />
 
       {/* ============================================================ */}
       {/* ZONE 1: The Card */}
@@ -426,14 +433,22 @@ export default function Home() {
 
         {/* Speaking */}
         <Section title="Speaking">
+          <YearChips years={speakingYears} value={speakingYear} onChange={setSpeakingYear} />
           <ul className="flex flex-col gap-0 list-none">
             {speakings.map((item, i) => (
-              <li key={item.id} hidden={i >= 3 && !showAllSpeakings}>
+              <li
+                key={item.id}
+                hidden={
+                  speakingYear === 'all'
+                    ? i >= 3 && !showAllSpeakings
+                    : !item.date.startsWith(speakingYear)
+                }
+              >
                 <SpeakingRow item={item} />
               </li>
             ))}
           </ul>
-          {speakings.length > 3 && (
+          {speakingYear === 'all' && speakings.length > 3 && (
             <MoreButton
               expanded={showAllSpeakings}
               onClick={() => setShowAllSpeakings((v) => !v)}
@@ -828,6 +843,38 @@ function BioCard({ text }: { text: string }) {
       <p className="text-xs" style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
         {text}
       </p>
+    </div>
+  );
+}
+
+// 年で絞るチップ。全件は常に DOM にあり、hidden で出し入れするだけなので
+// エージェントからは絞り込み状態に関係なく全件読める
+function YearChips({ years, value, onChange }: {
+  years: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const options = ['all', ...years];
+  return (
+    <div className="flex flex-wrap gap-1.5 mb-4">
+      {options.map((y) => {
+        const on = y === value;
+        return (
+          <button
+            key={y}
+            onClick={() => onChange(y)}
+            aria-pressed={on}
+            className="font-mono text-xs px-2.5 py-1 rounded-full transition-colors press-in cursor-pointer"
+            style={
+              on
+                ? { backgroundColor: 'var(--color-text)', color: 'var(--color-bg)', fontWeight: 700 }
+                : { color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }
+            }
+          >
+            {y === 'all' ? 'すべて' : y}
+          </button>
+        );
+      })}
     </div>
   );
 }
