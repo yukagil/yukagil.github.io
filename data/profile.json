@@ -4,7 +4,7 @@
   "jobTitle": "Product Manager",
   "handle": "@yukagil",
   "url": "https://yukagil.github.io",
-  "imageUrl": "https://storage.googleapis.com/studio-cms-assets/projects/Z9qp7nJGOP/s-1120x1120_v-fs_webp_2a3f9622-e54d-4f8b-8670-510ba156906d_small.webp",
+  "imageUrl": "/images/avatar.webp",
   "positions": [
     "Muture 執行役員 CPO",
     "marui unite 取締役 CPO"
@@ -138,7 +138,7 @@
       "links": [
         {
           "label": "Granty PM",
-          "href": "https://pm-notes.com/pm_37/"
+          "href": "https://granty.me/pm-soudan/pm_37"
         }
       ]
     },
