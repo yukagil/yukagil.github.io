@@ -176,7 +176,7 @@ export default function Home() {
       {/* ============================================================ */}
       <div
         className="flex flex-col items-center justify-center px-4 relative overflow-hidden"
-        style={{ minHeight: '100svh' }}
+        style={{ minHeight: 'calc(100svh - var(--frame) * 2)' }}
       >
         {/* Physics particle background */}
         <ParticleBackground />

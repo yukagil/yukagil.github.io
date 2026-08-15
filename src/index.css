@@ -307,7 +307,7 @@ main .game-select:focus-within::before {
   position: fixed;
   right: 16px;
   bottom: 16px;
-  z-index: 160;
+  z-index: 161;
   font-size: 12px;
   font-weight: 700;
   padding: 10px 14px;
@@ -316,11 +316,42 @@ main .game-select:focus-within::before {
   color: var(--color-bg);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
   cursor: pointer;
-  transition: transform var(--duration-fast) var(--ease-bounce),
+  /* 現れるときは下から跳ね上がる。消えるときは素直に沈む */
+  transition: transform var(--duration-normal) var(--ease-bounce),
               opacity var(--duration-normal) ease;
 }
+.section-menu-trigger[aria-hidden='true'] {
+  transform: translateY(16px) scale(0.9);
+}
 .section-menu-trigger:hover {
-  transform: scale(0.96);
+  transform: scale(0.94);
+}
+.section-menu-trigger:active {
+  transform: scale(0.9);
+}
+
+/* パネルはボタンの位置から開く。別の場所に湧いて出るのではなく、
+   押したものが広がったように見せる */
+@keyframes menuUnfold {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes menuRowIn {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .section-menu {
@@ -336,7 +367,26 @@ main .game-select:focus-within::before {
   background-color: var(--color-bg);
   border: 2px solid var(--color-text);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-  animation: dqSlideUp 0.28s var(--ease-bounce) both;
+  transform-origin: bottom right;
+  animation: menuUnfold 0.26s var(--ease-bounce) both;
+}
+
+/* 行はコマンドウィンドウが1行ずつ書き出されるように、少しずつ遅れて入る */
+.section-menu li {
+  animation: menuRowIn 0.2s var(--ease-smooth) both;
+}
+.section-menu li:nth-child(1) { animation-delay: 0.06s; }
+.section-menu li:nth-child(2) { animation-delay: 0.1s; }
+.section-menu li:nth-child(3) { animation-delay: 0.14s; }
+.section-menu li:nth-child(4) { animation-delay: 0.18s; }
+.section-menu li:nth-child(5) { animation-delay: 0.22s; }
+.section-menu li:nth-child(6) { animation-delay: 0.26s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .section-menu,
+  .section-menu li {
+    animation: none;
+  }
 }
 
 .section-menu-head {
@@ -374,10 +424,11 @@ main .game-select:focus-within::before {
 
 /* ===== 画面としての枠取り =====
    ページ全体を機器の画面に見立て、周囲を筐体として残す。
-   Zone 1 は 100svh 固定なので、枠のぶんを引かないと画面から
-   はみ出す（inline style で入っているため !important で上書き）。
-   固定要素も枠の内側に寄せる。外に出ると筐体の上に UI が乗って
-   しまい、「画面の中」に見えなくなる。 */
+
+   body の padding は文書の流れの一部なので、スクロールすると上下が
+   一緒に流れて消えてしまう。枠はビューポートに固定した1枚の
+   オーバーレイで描き、padding は「本文を枠の下に潜らせない」ためだけに
+   残している。 */
 :root {
   --frame: 8px;
   --frame-radius: 16px;
@@ -390,24 +441,28 @@ main .game-select:focus-within::before {
 }
 
 body {
-  background-color: var(--color-text);
+  background-color: var(--color-bg);
   padding: var(--frame);
 }
 
 #root {
-  background-color: var(--color-bg);
   border-radius: var(--frame-radius);
-  overflow: hidden;
-  /* 縁を1本だけ締める。落ち影は付けない（浮かせると板になる） */
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
-/* Zone 1 の 100svh から枠のぶんを引く */
-#root > div:first-of-type {
-  min-height: calc(100svh - var(--frame) * 2) !important;
+/* 筐体。角丸の穴を1つ空け、その外側を塗りつぶす。
+   pointer-events: none なので操作の邪魔はしない */
+body::after {
+  content: '';
+  position: fixed;
+  inset: var(--frame);
+  border-radius: var(--frame-radius);
+  box-shadow: 0 0 0 100vmax var(--color-text);
+  pointer-events: none;
+  z-index: 300;
 }
 
-/* 固定要素を枠の内側へ */
+/* 固定要素を枠の内側へ。外に出ると筐体の上に UI が乗ってしまい、
+   「画面の中」に見えなくなる */
 .section-menu-trigger,
 .section-menu {
   right: calc(16px + var(--frame));
