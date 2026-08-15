@@ -35,8 +35,14 @@ export default function ScrollHud() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-[150] transition-all duration-300"
+      className="fixed z-[150] transition-all duration-300"
       style={{
+        top: 'var(--frame)',
+        left: 'var(--frame)',
+        right: 'var(--frame)',
+        borderTopLeftRadius: 'var(--frame-radius)',
+        borderTopRightRadius: 'var(--frame-radius)',
+        overflow: 'hidden',
         transform: shown ? 'translateY(0)' : 'translateY(-100%)',
         opacity: shown ? 1 : 0,
         pointerEvents: shown ? 'auto' : 'none',

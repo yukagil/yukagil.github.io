@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import QRCode from 'qrcode';
 import SEO from './components/SEO';
 import ParticleBackground from './components/ParticleBackground';
-import DesignLab from './components/DesignLab';
 import ScrollHud from './components/ScrollHud';
 import SectionRail from './components/SectionRail';
+import SectionMenu from './components/SectionMenu';
 import {
   ExternalLink,
   Linkedin,
@@ -169,6 +169,7 @@ export default function Home() {
       <SEO />
       <ScrollHud />
       <SectionRail />
+      <SectionMenu />
 
       {/* ============================================================ */}
       {/* ZONE 1: The Card */}
@@ -597,9 +598,6 @@ export default function Home() {
           </p>
         </footer>
       </main>
-
-      {/* デザイン探索用。?lab で出現。不要になったらこの行と import を消す */}
-      <DesignLab />
 
       {/* QR Code Modal */}
       {showQr && <QrModal profile={profile} onClose={() => setShowQr(false)} />}
