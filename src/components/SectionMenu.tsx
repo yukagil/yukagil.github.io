@@ -50,13 +50,14 @@ export default function SectionMenu() {
         onClick={() => setOpen((v) => !v)}
         className="section-menu-trigger font-mono"
         aria-expanded={showPanel}
+        aria-label={showPanel ? 'メニューを閉じる' : 'セクションメニューを開く'}
         aria-hidden={!pastHero}
         style={{
           opacity: pastHero ? 1 : 0,
           pointerEvents: pastHero ? 'auto' : 'none',
         }}
       >
-        {showPanel ? '× とじる' : '≡ メニュー'}
+        <span aria-hidden="true">{showPanel ? '×' : '≡'}</span>
       </button>
 
       {showPanel && (

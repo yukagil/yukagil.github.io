@@ -497,7 +497,7 @@ export default function Home() {
               <li
                 key={i}
                 className={i > 0 ? 'pt-4 mt-4' : undefined}
-                style={i > 0 ? { borderTop: '1px dashed var(--color-border)' } : undefined}
+                style={i > 0 ? { borderTop: '1px solid var(--color-border)' } : undefined}
               >
                 <p className="text-sm font-bold mb-1">{s.name}</p>
                 <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
@@ -705,7 +705,7 @@ function Section({ id, title, children }: { id?: string; title?: string; childre
       ref={ref}
       id={id}
       className={`animate-section ${isInView ? 'in-view' : ''}`}
-      style={{ paddingTop: 'var(--space-section)', scrollMarginTop: '64px' }}
+      style={{ paddingTop: 'var(--space-section)' }}
     >
       {title && (
         <h2
@@ -728,7 +728,7 @@ function ProfileBios() {
   const [selected, setSelected] = useState(profile.bios.length - 1);
 
   return (
-    <div className="mt-6 pt-5" style={{ borderTop: '1px dashed var(--color-border)' }}>
+    <div className="mt-6 pt-5" style={{ borderTop: '1px solid var(--color-border)' }}>
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}

@@ -308,9 +308,12 @@ main .game-select:focus-within::before {
   right: 16px;
   bottom: 16px;
   z-index: 161;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 10px 14px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 17px;
+  line-height: 1;
   border-radius: 999px;
   background-color: var(--color-text);
   color: var(--color-bg);
@@ -432,6 +435,8 @@ main .game-select:focus-within::before {
 :root {
   --frame: 8px;
   --frame-radius: 16px;
+  /* 常駐ヘッダーの高さ。ジャンプ先が隠れないよう逃がすのに使う */
+  --hud-height: 46px;
 }
 
 @media (min-width: 900px) {
@@ -472,4 +477,14 @@ body::after {
 }
 .section-menu {
   bottom: calc(64px + var(--frame));
+}
+
+/* ===== ジャンプ先の逃がし =====
+   Rail / メニュー / Services の Contact 導線は、いずれも見出し（h2）を
+   scrollIntoView する。section 側にだけ余白を付けても効かないので、
+   見出し自身にも同じ余白を持たせる。
+   枠 + 常駐ヘッダー + 余白ぶんだけ下げる。 */
+main section,
+main section > h2 {
+  scroll-margin-top: calc(var(--frame) + var(--hud-height) + 16px);
 }
