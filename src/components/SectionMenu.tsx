@@ -8,6 +8,18 @@ import { onScrollAll } from '../hooks/useScroller';
 //
 // 呼び出せるメニューがあること自体がこのサイトの遊びなので、
 // 見た目はコマンド窓の体裁にしている（▶ カーソル、等幅）。
+//
+// 見出しは英語のままなので、行き先が分かるよう日本語を添える。
+// 等幅で桁が揃うよう2文字で統一している。
+const LABEL_JA: Record<string, string> = {
+  Experience: '経歴',
+  Interviews: '取材',
+  Speaking: '登壇',
+  Writings: '執筆',
+  Services: '支援',
+  Contact: '連絡',
+};
+
 export default function SectionMenu() {
   const pastHero = useScrolledPastHero();
   const [open, setOpen] = useState(false);
@@ -67,6 +79,7 @@ export default function SectionMenu() {
                     ▶
                   </span>
                   <span className="flex-1 text-left">{s}</span>
+                  {LABEL_JA[s] && <span className="section-menu-ja">{LABEL_JA[s]}</span>}
                 </button>
               </li>
             ))}

@@ -419,6 +419,14 @@ main .game-select:focus-within::before {
 .section-menu-row[data-on='true'] {
   font-weight: 700;
 }
+.section-menu-ja {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+.section-menu-row[data-on='true'] .section-menu-ja {
+  color: var(--color-text-secondary);
+}
 
 /* ===== 画面としての枠取り =====
    ページ全体を機器の画面に見立て、周囲を筐体として残す。
