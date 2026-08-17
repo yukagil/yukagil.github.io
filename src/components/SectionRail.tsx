@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useScrolledPastHero } from '../hooks/useScrolledPastHero';
 import { onScrollAll } from '../hooks/useScroller';
-import { labelOf } from '../data/sectionLabels';
 
 // 広い画面で、右に現在地を示す固定ナビ。
+// ラベルは見出しと同じ英語のまま。ここは「いまどこにいるか」を
+// 見出しと対応させて示すインジケータで、メニュー（コマンド窓）とは
+// 役割が違う。
 // Zone 1（ヒーロー）では出さず、HUD と同じタイミングで現れる。
 export default function SectionRail() {
   const shown = useScrolledPastHero();
@@ -67,7 +69,7 @@ export default function SectionRail() {
                     backgroundColor: active ? 'var(--color-accent)' : 'var(--color-border)',
                   }}
                 />
-                {labelOf(name)}
+                {name}
               </button>
             </li>
           );
