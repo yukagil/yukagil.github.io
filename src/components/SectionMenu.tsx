@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useScrolledPastHero } from '../hooks/useScrolledPastHero';
+import { onScrollAll } from '../hooks/useScroller';
 
 // 狭い画面向けのセクションメニュー。
 // Rail（右の固定ナビ）は 1280px 以上でしか出ないので、それ未満を
@@ -26,12 +27,7 @@ export default function SectionMenu() {
       setCurrent(name);
     };
     read();
-    window.addEventListener('scroll', read, { passive: true });
-    window.addEventListener('resize', read);
-    return () => {
-      window.removeEventListener('scroll', read);
-      window.removeEventListener('resize', read);
-    };
+    return onScrollAll(read);
   }, []);
 
   // ヒーローに戻ったら畳む。state を戻すのではなく描画側で判定する

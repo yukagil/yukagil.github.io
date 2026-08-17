@@ -36,11 +36,6 @@
 }
 
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   font-family: var(--font-body);
   background-color: var(--color-bg);
@@ -299,6 +294,184 @@ main .game-select:focus-within::before {
   opacity: 1;
 }
 
+
+/* ===== 狭い画面のセクションメニュー（Rail の 1280px 未満版） ===== */
+/* 呼び出せるメニューがあること自体がこのサイトの遊びなので、
+   コマンド窓の体裁にしている */
+.section-menu-trigger {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 161;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 17px;
+  line-height: 1;
+  border-radius: 999px;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  /* 現れるときは下から跳ね上がる。消えるときは素直に沈む */
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              opacity var(--duration-normal) ease;
+}
+.section-menu-trigger[aria-hidden='true'] {
+  transform: translateY(16px) scale(0.9);
+}
+.section-menu-trigger:hover {
+  transform: scale(0.94);
+}
+.section-menu-trigger:active {
+  transform: scale(0.9);
+}
+
+/* パネルはボタンの位置から開く。別の場所に湧いて出るのではなく、
+   押したものが広がったように見せる */
+@keyframes menuUnfold {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes menuRowIn {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.section-menu {
+  position: fixed;
+  right: 16px;
+  bottom: 64px;
+  z-index: 160;
+  width: min(260px, calc(100vw - 32px));
+  max-height: min(70vh, 460px);
+  overflow-y: auto;
+  padding: 10px 0;
+  border-radius: 14px;
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-text);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  transform-origin: bottom right;
+  animation: menuUnfold 0.26s var(--ease-bounce) both;
+}
+
+/* 行はコマンドウィンドウが1行ずつ書き出されるように、少しずつ遅れて入る */
+.section-menu li {
+  animation: menuRowIn 0.2s var(--ease-smooth) both;
+}
+.section-menu li:nth-child(1) { animation-delay: 0.06s; }
+.section-menu li:nth-child(2) { animation-delay: 0.1s; }
+.section-menu li:nth-child(3) { animation-delay: 0.14s; }
+.section-menu li:nth-child(4) { animation-delay: 0.18s; }
+.section-menu li:nth-child(5) { animation-delay: 0.22s; }
+.section-menu li:nth-child(6) { animation-delay: 0.26s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .section-menu,
+  .section-menu li {
+    animation: none;
+  }
+}
+
+.section-menu-head {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  padding: 4px 16px 6px;
+}
+
+.section-menu-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.section-menu-row:hover {
+  background-color: rgba(208, 53, 48, 0.05);
+}
+.section-menu-cursor {
+  color: var(--color-accent);
+  visibility: hidden;
+  flex-shrink: 0;
+}
+.section-menu-row:hover .section-menu-cursor,
+.section-menu-row[data-on='true'] .section-menu-cursor {
+  visibility: visible;
+}
+.section-menu-row[data-on='true'] {
+  font-weight: 700;
+}
+
+/* ===== 画面としての枠取り =====
+   ページ全体を機器の画面に見立て、周囲を筐体として残す。
+
+   枠は html の背景そのもの。#root を画面に固定し、その内側だけを
+   スクロールさせることで、枠は原理的に動かない。
+   以前は body の padding + fixed オーバーレイで描いていたが、
+   ページ高さの変化でスクロールバーが出入りすると右端がずれ、
+   モバイルでは URL バーの伸縮で下端が動き、巨大な box-shadow が
+   スクロール中に再描画されてガタついた。 */
+:root {
+  --frame: 8px;
+  --frame-radius: 16px;
+  /* 常駐ヘッダーの高さ。ジャンプ先が隠れないよう逃がすのに使う */
+  --hud-height: 46px;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --frame: 14px;
+  }
+}
+
+html {
+  /* 筐体。この面はスクロールしないので絶対に動かない */
+  background-color: var(--color-text);
+  overflow: hidden;
+}
+
+#root {
+  position: fixed;
+  inset: var(--frame);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--color-bg);
+  border-radius: var(--frame-radius);
+  scroll-behavior: smooth;
+  /* スクロールバーの出入りで内寸が変わらないようにする */
+  scrollbar-gutter: stable;
+}
+
+/* 固定要素を枠の内側へ。外に出ると筐体の上に UI が乗ってしまい、
+   「画面の中」に見えなくなる */
+.section-menu-trigger,
+.section-menu {
+  right: calc(16px + var(--frame));
+}
+.section-menu-trigger {
+  bottom: calc(16px + var(--frame));
+}
+.section-menu {
+  bottom: calc(64px + var(--frame));
+}
 
 /* ===== 狭い画面のセクションメニュー（Rail の 1280px 未満版） ===== */
 /* 呼び出せるメニューがあること自体がこのサイトの遊びなので、

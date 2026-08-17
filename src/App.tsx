@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { scrollToTop } from './hooks/useScroller';
 import Home from './Home';
 
 function ScrollToTop() {
@@ -13,7 +14,7 @@ function ScrollToTop() {
         return;
       }
     }
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    scrollToTop();
   }, [pathname, hash]);
 
   return null;

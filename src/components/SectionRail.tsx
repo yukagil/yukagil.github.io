@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useScrolledPastHero } from '../hooks/useScrolledPastHero';
+import { onScrollAll } from '../hooks/useScroller';
 
 // 広い画面で、右に現在地を示す固定ナビ。
 // Zone 1（ヒーロー）では出さず、HUD と同じタイミングで現れる。
@@ -24,12 +25,7 @@ export default function SectionRail() {
       setState({ sections: headings.map((h) => h.textContent?.trim() ?? ''), active });
     };
     read();
-    window.addEventListener('scroll', read, { passive: true });
-    window.addEventListener('resize', read);
-    return () => {
-      window.removeEventListener('scroll', read);
-      window.removeEventListener('resize', read);
-    };
+    return onScrollAll(read);
   }, []);
 
   const jump = (name: string) => {

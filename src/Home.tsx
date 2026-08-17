@@ -165,7 +165,7 @@ export default function Home() {
   }, [encounterActive, isFlipped]);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text)' }}>
+    <div style={{ color: 'var(--color-text)' }}>
       <SEO />
       <ScrollHud />
       <SectionRail />
@@ -176,7 +176,7 @@ export default function Home() {
       {/* ============================================================ */}
       <div
         className="flex flex-col items-center justify-center px-4 relative overflow-hidden"
-        style={{ minHeight: 'calc(100svh - var(--frame) * 2)' }}
+        style={{ minHeight: 'calc(100dvh - var(--frame) * 2)' }}
       >
         {/* Physics particle background */}
         <ParticleBackground />
