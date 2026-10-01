@@ -126,8 +126,8 @@ function calculateAge() {
 const interviews = staticInterviews as Interview[];
 const speakings = staticSpeakings as Speaking[];
 
-// 登壇は10件・4年ぶんあるので年で絞れるようにする。
-// Interviews は4件しかなく、チップのほうが中身より多くなるので付けない
+// 登壇は11件・4年ぶんあるので年で絞れるようにする。
+// Interviews は3件しかなく、チップのほうが中身より多くなるので付けない
 const speakingYears = [...new Set(speakings.map((s) => s.date.slice(0, 4)))].sort().reverse();
 
 // ============================================================
