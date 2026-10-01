@@ -1,5 +1,22 @@
 [
   {
+    "id": "tvtokyo-20260516",
+    "date": "2026.05.16",
+    "event": "テレ東 円卓コンフィデンシャル",
+    "title": "“ダメな顧客体験”を隠せない時代を生き抜く！UX設計の極意",
+    "summary": "UXの実務家が集まる円卓で、より良いUXを実現する手法と、UXの重要性を社内に広める方法を語った。",
+    "mainLink": "https://www.tv-tokyo.co.jp/broad_tvtokyo/program/detail/202605/27145_202605161100.html",
+    "relatedLinks": [
+      {
+        "label": "Program",
+        "url": "https://www.tv-tokyo.co.jp/broad_tvtokyo/program/detail/202605/27145_202605161100.html",
+        "type": "event"
+      }
+    ],
+    "imageUrl": "https://yukagil.github.io/images/tvtokyo-20260516.jpg",
+    "dateIso": "2026-05-16"
+  },
+  {
     "id": "1f2ay-asxq3",
     "date": "2026.02.26",
     "event": "YOUTRUST",

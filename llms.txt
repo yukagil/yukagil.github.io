@@ -2074,6 +2074,8 @@ note と X で、プロダクトマネジメントや組織の話を中心に書
 
 登壇実績。全件は https://yukagil.github.io/data/speakings.json を参照してください。
 
+- [“ダメな顧客体験”を隠せない時代を生き抜く！UX設計の極意](https://www.tv-tokyo.co.jp/broad_tvtokyo/program/detail/202605/27145_202605161100.html) — テレ東 円卓コンフィデンシャル, 2026.05.16 ([Program](https://www.tv-tokyo.co.jp/broad_tvtokyo/program/detail/202605/27145_202605161100.html))
+  - UXの実務家が集まる円卓で、より良いUXを実現する手法と、UXの重要性を社内に広める方法を語った。
 - [会社タイプ別でわかる 社内コミュニケーション講座](https://youtrust.jp/lp/youtrust_campus_officepolitics_archive) — YOUTRUST, 2026.02.26 ([Slides](https://speakerdeck.com/muture/she-nei-zheng-zhi-tojiao-she), [Report](https://youtrust.jp/lp/youtrust_campus_officepolitics_archive))
   - 社内政治を「意思決定を進める力」として捉え直す。根回し・説得・場の設計の実践的な整理。
 - [大企業のUX組織が見据える未来](https://note.com/note_uxia/n/n25dd7aaaea07) — UX組織成功戦略会議2025, 2025.11.25 ([Report](https://note.com/note_uxia/n/n25dd7aaaea07))
@@ -2099,8 +2101,6 @@ note と X で、プロダクトマネジメントや組織の話を中心に書
 
 取材・インタビュー記事。全件は https://yukagil.github.io/data/interviews.json を参照してください。
 
-- [“ダメな顧客体験”を隠せない時代を生き抜く！UX設計の極意](https://www.tv-tokyo.co.jp/broad_tvtokyo/program/detail/202605/27145_202605161100.html) — テレ東 円卓コンフィデンシャル, 2026.05.16
-  - UXの実務家が集まる円卓で、より良いUXを実現する手法と、UXの重要性を社内に広める方法を語った。
 - [安く、早く、で終わらせない。丸井グループのDXが向き合う内製化の“本質”とは](https://studio.design/ja/interview/maruigroup) — Studio Blog, 2025.10.30
   - 内製化の本質は「安く早く」ではなく、浮いた時間を何に使うか。働く人の納得感と尊厳に向き合うDX。
 - [マルイユナイト 設立までの変遷とこれから](https://note.com/marui_unite/n/n6a25929bc4d1) — marui unite note, 2024.10.25
