@@ -432,7 +432,7 @@ export default function Home() {
           )}
         </Section>
 
-        {/* Speaking */}
+        {/* Speaking — like Interviews, the latest one gets its image */}
         <Section title="Speaking">
           <YearChips years={speakingYears} value={speakingYear} onChange={setSpeakingYear} />
           <ul className="flex flex-col gap-0 list-none">
@@ -445,7 +445,20 @@ export default function Home() {
                     : !item.date.startsWith(speakingYear)
                 }
               >
-                <SpeakingRow item={item} />
+                {i === 0 ? (
+                  <FeaturedCard
+                    link={item.mainLink}
+                    imageUrl={item.imageUrl}
+                    label={item.event}
+                    title={item.title}
+                    date={item.date}
+                    summary={item.summary}
+                  >
+                    <RelatedLinks links={item.relatedLinks} />
+                  </FeaturedCard>
+                ) : (
+                  <SpeakingRow item={item} />
+                )}
               </li>
             ))}
           </ul>
@@ -897,48 +910,55 @@ function MoreButton({ expanded, onClick }: {
   );
 }
 
-function FeaturedCard({ link, imageUrl, label, title, date, summary }: {
+function FeaturedCard({ link, imageUrl, label, title, date, summary, children }: {
   link: string;
   imageUrl?: string;
   label: string;
   title: string;
   date: string;
   summary?: string;
+  children?: React.ReactNode;
 }) {
+  // children（登壇の関連リンクなど）はカード全体のリンクの外に置く。<a> は入れ子にできない
   return (
-    <a
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group block rounded-xl overflow-hidden transition-shadow hover:shadow-md"
+    <div
+      className="rounded-xl overflow-hidden transition-shadow hover:shadow-md"
       style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg)' }}
     >
-      {imageUrl && (
-        <div className="aspect-[16/9] w-full overflow-hidden">
-          <img
-            src={imageUrl}
-            alt=""
-            loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          />
-        </div>
-      )}
-      <div
-        className="px-4 py-3"
-        style={{ borderTop: '1px solid var(--color-border)' }}
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block"
       >
-        <div className="flex items-center justify-between gap-3 mb-1">
-          <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
-          <DateText date={date} className="font-mono text-xs flex-shrink-0" />
-        </div>
-        <div className="text-sm font-medium leading-snug transition-colors link-accent">{title}</div>
-        {summary && (
-          <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
-            {summary}
-          </p>
+        {imageUrl && (
+          <div className="aspect-[16/9] w-full overflow-hidden">
+            <img
+              src={imageUrl}
+              alt=""
+              loading="lazy"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            />
+          </div>
         )}
-      </div>
-    </a>
+        <div
+          className="px-4 pt-3"
+          style={{ borderTop: '1px solid var(--color-border)', paddingBottom: children ? 0 : '0.75rem' }}
+        >
+          <div className="flex items-center justify-between gap-3 mb-1">
+            <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
+            <DateText date={date} className="font-mono text-xs flex-shrink-0" />
+          </div>
+          <div className="text-sm font-medium leading-snug transition-colors link-accent">{title}</div>
+          {summary && (
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>
+              {summary}
+            </p>
+          )}
+        </div>
+      </a>
+      {children && <div className="px-4 pb-3">{children}</div>}
+    </div>
   );
 }
 
@@ -1014,6 +1034,33 @@ function QaBoxCard() {
   );
 }
 
+function RelatedLinks({ links }: { links?: RelatedLink[] }) {
+  if (!links || links.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-1">
+      {links.map((link, idx) => {
+        const Icon = link.type === 'slide' ? FileText : link.type === 'video' ? Video : LinkIcon;
+        return (
+          <a
+            key={idx}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded transition-colors link-accent"
+            style={{
+              color: 'var(--color-text-muted)',
+              backgroundColor: 'var(--color-surface)',
+            }}
+          >
+            <Icon size={10} />
+            {link.label}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
 function SpeakingRow({ item }: { item: Speaking }) {
   return (
     <div
@@ -1041,29 +1088,7 @@ function SpeakingRow({ item }: { item: Speaking }) {
           {item.summary}
         </p>
       )}
-      {item.relatedLinks && item.relatedLinks.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mt-1">
-          {item.relatedLinks.map((link, idx) => {
-            const Icon = link.type === 'slide' ? FileText : link.type === 'video' ? Video : LinkIcon;
-            return (
-              <a
-                key={idx}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded transition-colors link-accent"
-                style={{
-                  color: 'var(--color-text-muted)',
-                  backgroundColor: 'var(--color-surface)',
-                }}
-              >
-                <Icon size={10} />
-                {link.label}
-              </a>
-            );
-          })}
-        </div>
-      )}
+      <RelatedLinks links={item.relatedLinks} />
     </div>
   );
 }
